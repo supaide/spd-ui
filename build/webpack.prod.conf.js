@@ -25,8 +25,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.build.assetsRoot,
-    filename: 'vue-components.min.js',
-    library: 'VueComponents',
+    filename: 'spd-ui.min.js',
+    library: 'SPD-UI',
     libraryTarget: 'umd'
   },
   externals: {
