@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import {util} from 'webutil'
+import {util} from 'spd-webutil'
 export default {
   name: 'page',
   props: {

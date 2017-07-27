@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-import {$} from 'webutil';
+import {$} from 'spd-webutil';
 
 /**
  * set transition
