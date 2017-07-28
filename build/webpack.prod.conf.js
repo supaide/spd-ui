@@ -1,4 +1,5 @@
 var path = require('path')
+const pkg = require('../package.json');
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
@@ -29,6 +30,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     library: 'SPD-UI',
     libraryTarget: 'umd'
   },
+  /*
   externals: {
     vue: {
       root: 'Vue',
@@ -37,11 +39,17 @@ var webpackConfig = merge(baseWebpackConfig, {
       amd: 'vue'
     }
   },
+  */
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
+    new webpack.BannerPlugin([
+      pkg.name + ' v' + pkg.version + ' (' + pkg.homepage + ')',
+      'Copyright ' + new Date().getFullYear() + ', ' + pkg.author,
+      pkg.license + ' license'
+    ].join('\n')),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
