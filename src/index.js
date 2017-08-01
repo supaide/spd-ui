@@ -5,10 +5,7 @@ import InviewDirective from './directives/inview/index.js'
 import TransferDom from './directives/transfer-dom/index.js'
 import TransferDomDirective from './directives/transfer-dom/index.js'
 
-import alert from './components/alert'
-import confirm from './components/confirm'
-import dialog from './components/dialog'
-import loading from './components/loading'
+import DialogPlugin from './plugins/dialog/install.js'
 
 import Cell from './components/cell/index.vue'
 import Group from './components/group/index.vue'
@@ -24,10 +21,7 @@ export {
   TransferDom,
   TransferDomDirective,
 
-  alert,
-  confirm,
-  dialog,
-  loading,
+  DialogPlugin,
 
   Cell,
   Group,

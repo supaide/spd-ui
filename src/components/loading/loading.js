@@ -15,9 +15,6 @@
 */
 
 import {$} from 'spd-webutil';
-import '../../style/weui/widget/weui-tips/weui-mask.less';
-import '../../style/weui/widget/weui-tips/weui-toast.less';
-import '../../style/weui/widget/weui-loading/weui-loading.less';
 
 const tpl = `
 <div class="weui-loading_toast <%= className %>">
