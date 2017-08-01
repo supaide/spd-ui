@@ -1,5 +1,5 @@
 <template>
-<div :class="className">
+<div>
   <div class="weui-cells__title" :style="{color:titleColor}" v-if="title" v-html="title"></div>
   <div class="weui-cells" :style="{marginTop: gutter}">
     <slot></slot>
@@ -10,7 +10,6 @@
 <script>
 export default {
   props: {
-    className: String,
     title: String,
     gutter: String,
     titleColor: String,
