@@ -1,31 +1,33 @@
 <template>
-  <span @click="clickHandler">picker</span>
+  <node :type="nodeType" @click.native="clickHandler"><slot></slot></node>
 </template>
 <script>
 import {picker, datePicker} from './picker'
+import Node from '../node/index.vue'
 export default {
   props: {
+    nodeType: { // html node type
+      type: String,
+      default: 'div'
+    },
     type: { // picker|datePicker
       type: String,
       default: 'picker'
     },
     id: { // 作为picker的唯一标识，作用是以id缓存当时的选择
       type: String,
-      default: 'default'
+      default: 'picker'
     },
     items: { // picker的数据
       type: Array,
       default: null
     },
+    depth: Number,
     defaultValue: { // 默认选项的value数组
       type: Array,
       default: null
     },
     className: { // 容器样式名
-      type: String,
-      default: ''
-    },
-    container: { // 指定容器
       type: String,
       default: ''
     },
@@ -50,67 +52,31 @@ export default {
       default: '* * *'
     }
   },
-  data () {
-    return {
-      picker: null
-    }
+  components: {
+    Node
   },
   methods: {
-    getPicker () {
-      if (this.picker) {
-        //return this.picker
-      }
-      let r = Math.round(Math.random()*100)
-      let data = [{
-        label: '飞机票'+r,
-        value: 0
-      }, {
-        label: '火车票(disabled)',
-        disabled: true,
-        value: 1
-      }, {
-        label: '的士票(disabled)',
-        disabled: true,
-        value: 2
-      }, {
-        label: '住宿费'+r,
-        value: 3
-      }, {
-        label: '礼品费',
-        value: 4
-      }, {
-        label: '活动费',
-        value: 5
-      }, {
-        label: '通讯费',
-        value: r
-      }, {
-        label: '补助',
-        value: 7
-      }, {
-        label: '通讯费',
-        value: 8
-      }, {
-        label: '其他',
-        value: 9
-      }]
-      let options = {
-        defaultValue: [8],
-        className: 'custom-classname',
-        onChange: function (result) {
-          //console.log(item, index);
-          console.log(result);
-        },
-        onConfirm: function (result) {
-          console.log(result);
-        },
-        id: 'picker'
-      }
-      this.picker = picker(data, options)
-      return this.picker
-    },
     clickHandler () {
-      let picker = this.getPicker()
+      let options = {
+        id: this.id,
+        className: this.className,
+        defaultValue: this.defaultValue,
+        onChange: (result) => {
+          this.$emit('on-change', result)
+        },
+        onConfirm: (result) => {
+          this.$emit('on-confirm', result)
+        }
+      }
+      if (this.type == 'picker') {
+        options.depth = this.depth
+        picker(this.items, options)
+      } else {
+        options.start = this.start
+        options.end = this.end
+        options.cron = this.cron
+        datePicker(options)
+      }
     }
   }
 

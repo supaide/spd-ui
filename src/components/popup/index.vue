@@ -1,207 +1,96 @@
 <template>
-  <transition :name="`vux-popup-animate-${position}`">
-    <div v-show="show && !initialShow" :style="styles" class="vux-popup-dialog" :class="[`vux-popup-${position}`, show ? 'vux-popup-show' : '']">
+  <div :class="className" v-show="show">
+    <div class="weui-mask popup-mask" ref="mask" v-show="showMask" @click="onMaskClick"></div>
+    <div class="weui-picker" ref="picker" :style="{background: background}">
       <slot></slot>
     </div>
-  </transition>
+  </div>
 </template>
-
 <script>
-import Popup from './popup'
+import {$, util} from 'spd-webutil'
 
+let popupCache = {}
 export default {
-  name: 'popup',
   props: {
     value: Boolean,
-    height: {
+    className: String,
+    background: {
       type: String,
-      default: 'auto'
-    },
-    width: {
-      type: String,
-      default: 'auto'
-    },
-    showMask: {
-      type: Boolean,
-      default: true
-    },
-    isTransparent: Boolean,
-    hideOnBlur: {
-      type: Boolean,
-      default: true
-    },
-    position: {
-      type: String,
-      default: 'bottom'
-    },
-    maxHeight: String
-  },
-  mounted () {
-    this.$overflowScrollingList = document.querySelectorAll('.vux-fix-safari-overflow-scrolling')
-    this.$nextTick(() => {
-      const _this = this
-      this.popup = new Popup({
-        showMask: _this.showMask,
-        container: _this.$el,
-        hideOnBlur: _this.hideOnBlur,
-        onOpen () {
-          _this.fixSafariOverflowScrolling('auto')
-          _this.show = true
-        },
-        onClose () {
-          _this.show = false
-          if (window.__$vuxPopups && Object.keys(window.__$vuxPopups).length > 1) return
-          if (document.querySelector('.vux-popup-dialog.vux-popup-mask-disabled')) return
-          setTimeout(() => {
-            _this.fixSafariOverflowScrolling('touch')
-          }, 300)
-        }
-      })
-      if (this.value) {
-        this.popup.show()
-      }
-      this.initialShow = false
-    })
-  },
-  methods: {
-    /**
-    * https://github.com/airyland/vux/issues/311
-    * https://benfrain.com/z-index-stacking-contexts-experimental-css-and-ios-safari/
-    */
-    fixSafariOverflowScrolling (type) {
-      if (!this.$overflowScrollingList.length) return
-      // if (!/iphone/i.test(navigator.userAgent)) return
-      for (let i = 0; i < this.$overflowScrollingList.length; i++) {
-        this.$overflowScrollingList[i].style.webkitOverflowScrolling = type
-      }
+      default: '#fff'
     }
   },
   data () {
     return {
-      initialShow: true,
-      hasFirstShow: false,
-      show: this.value
+      show: false,
+      showMask: true
     }
   },
-  computed: {
-    styles () {
-      const styles = {}
-      if (!this.position || this.position === 'bottom' || this.position === 'top') {
-        styles.height = this.height
-      } else {
-        styles.width = this.width
+  mounted () {
+    $(this.$refs.picker).on('animationend webkitAnimationEnd', this.showListener)
+    popupCache[this._uid] = this
+  },
+  destroyed () {
+    $(this.$refs.picker).off('animationend webkitAnimationEnd', this.showListener)
+    delete popupCache[this._uid]
+  },
+  methods: {
+    resetMask () {
+      let isShow = false
+      util.each(popupCache, (uid, vm) => {
+        if (vm.show && uid != this._uid) {
+          isShow = true
+          return false
+        }
+      })
+      this.showMask = !isShow
+    },
+    onShow () {
+      this.resetMask()
+      $.getStyle(this.$el, 'transform'); 
+      this.$refs.mask.classList.add('weui-animate-fade-in')
+      this.$refs.picker.classList.add('weui-animate-slide-up')
+      this.$refs.mask.classList.remove('weui-animate-fade-out')
+      this.$refs.picker.classList.remove('weui-animate-slide-down') 
+      this.show = true
+    },
+    onHide () {
+      if (!this.show) {
+        return
       }
-
-      if (this.maxHeight) {
-        styles['max-height'] = this.maxHeight
+      this.$refs.mask.classList.add('weui-animate-fade-out')
+      this.$refs.picker.classList.add('weui-animate-slide-down') 
+      this.$refs.mask.classList.remove('weui-animate-fade-in')
+      this.$refs.picker.classList.remove('weui-animate-slide-up') 
+    },
+    onMaskClick () {
+      util.each(popupCache, (uid, vm) => {
+        vm.onHide.apply(vm)
+      })
+    },
+    showListener () {
+      if (this.$refs.picker.className.indexOf('weui-animate-slide-down') > -1) {
+        this.show = false
       }
-
-      this.isTransparent && (styles['background'] = 'transparent')
-      return styles
     }
   },
   watch: {
+    show (val) {
+      if (val) {
+        this.onShow()  
+      } else {
+        this.onHide()
+      }
+      this.$emit('input', this.show)
+    },
     value (val) {
       this.show = val
-    },
-    show (val) {
-      this.$emit('input', val)
-      if (val) {
-        this.popup && this.popup.show()
-        this.$emit('on-show')
-        this.fixSafariOverflowScrolling('auto')
-        if (!this.hasFirstShow) {
-          this.$emit('on-first-show')
-          this.hasFirstShow = true
-        }
-      } else {
-        this.$emit('on-hide')
-        this.show = false
-        this.popup.hide(false)
-        setTimeout(() => {
-          if (!document.querySelector('.vux-popup-dialog.vux-popup-show')) {
-            this.fixSafariOverflowScrolling('touch')
-          }
-        }, 200)
-      }
     }
-  },
-  beforeDestroy () {
-    this.popup.destroy()
-    this.fixSafariOverflowScrolling('touch')
   }
+
 }
 </script>
-
 <style lang="less">
-//@import '../../styles/variable.less';
-
-.vux-popup-dialog {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background: #ccc;
-  z-index: 501;
-  transition-property: transform;
-  transition-duration: 300ms;
-  max-height: 100%;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
-.vux-popup-dialog.vux-popup-left {
-  width: auto;
-  height: 100%;
-  top: 0;
-  right: auto;
-  bottom: auto;
-  left: 0;
-}
-.vux-popup-dialog.vux-popup-right {
-  width: auto;
-  height: 100%;
-  top: 0;
-  right: 0;
-  bottom: auto;
-  left: auto;
-}
-.vux-popup-dialog.vux-popup-top {
-  width: 100%;
-  top: 0;
-  right: auto;
-  bottom: auto;
-  left: 0;
-}
-.vux-popup-mask {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  tap-highlight-color: rgba(0,0,0,0);
-  z-index: -1;
-  transition: opacity 400ms;
-}
-.vux-popup-mask.vux-popup-show {
-  opacity: 1;
-}
-
-.vux-popup-animate-bottom-enter, .vux-popup-animate-bottom-leave-active {
-  transform: translate3d(0, 100%, 0);
-}
-
-.vux-popup-animate-left-enter, .vux-popup-animate-left-leave-active {
-  transform: translate3d(-100%, 0, 0);
-}
-
-.vux-popup-animate-right-enter, .vux-popup-animate-right-leave-active {
-  transform: translate3d(100%, 0, 0);
-}
-
-.vux-popup-animate-top-enter, .vux-popup-animate-top-leave-active {
-  transform: translate3d(0, -100%, 0);
-}
+@import '../../style/weui/widget/weui-tips/weui-mask.less';
+@import '../../style/weui/widget/weui-picker/weui-picker.less';
+@import '../../style/weui/widget/weui-animate/weui-animate.less';
 </style>

@@ -5,10 +5,12 @@ import InviewDirective from './directives/inview/index.js'
 import TransferDom from './directives/transfer-dom/index.js'
 import TransferDomDirective from './directives/transfer-dom/index.js'
 
-import DialogPlugin from './plugins/dialog/install.js'
+import Installer from './plugins/install.js'
 
+import ActionSheet from './components/actionSheet/index.vue'
 import Cell from './components/cell/index.vue'
 import Group from './components/group/index.vue'
+import Node from './components/node/index.vue'
 import Page from './components/page/index.vue'
 import Picker from './components/picker/index.vue'
 import Popup from './components/popup/index.vue'
@@ -21,13 +23,15 @@ export {
   TransferDom,
   TransferDomDirective,
 
-  DialogPlugin,
+  Installer,
 
+  ActionSheet,
   Cell,
   Group,
+  Node,
   Page,
-  Picker,
   Popup,
+  Picker,
   Scroll,
   Spinner
 }
