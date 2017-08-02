@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="weui-cells__title" :style="{color:titleColor}" v-if="title" v-html="title"></div>
-  <div class="weui-cells" :style="{marginTop: gutter}">
+  <div class="weui-cells" :class="className" :style="{marginTop: gutter}">
     <slot></slot>
   </div>
   <div class="weui-cells__tips" :style="{color:tipsColor}" v-html="tips"></div>
@@ -10,6 +10,7 @@
 <script>
 export default {
   props: {
+    className: String,
     title: String,
     gutter: String,
     titleColor: String,

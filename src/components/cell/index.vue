@@ -1,16 +1,15 @@
 <template>
-<node :type="nodeType" class="weui-cell" :class="{'weui-cell_access': isLink}" :href="href" @click.native="onClick">
+<node :type="nodeType0" class="weui-cell" :class="{'weui-cell_access': isLink}" :href="href" @click.native="onClick">
   <div class="weui-cell__hd">
     <label class="weui-label" :style="labelStyle" v-if="label">{{label}}</label>
     <slot name="label"></slot>
   </div>
   <div class="weui-cell__bd">
-    <p v-if="title">{{title}}</p>
-    <slot></slot>
+    <p><slot>{{title}}</slot></p>
   </div>
   <div class="weui-cell__ft">
     <span v-if="right">{{right}}</span>
-    <slot name="right"></slot>
+    <slot name="right">{{right}}</slot>
     <i class="weui-loading" v-if="isLoading"></i>
   </div>
 </node>
@@ -22,6 +21,7 @@ export default {
     Node
   },
   props: {
+    nodeType: String,
     isLink: Boolean,
     label: String,
     title: String,
@@ -33,16 +33,16 @@ export default {
   },
   data () {
     return {
-      nodeType: 'a',
+      nodeType0: 'a',
       href: null
     }
   },
   created () {
     if (this.isLink) {
-      this.nodeType = 'a'
+      this.nodeType0 = 'a'
       this.href = 'javascript:;'
     } else {
-      this.nodeType = 'div'
+      this.nodeType0 = this.nodeType ? this.nodeType : 'div'
       this.href = null
     }
   },
@@ -69,9 +69,4 @@ export default {
 @import '../../style/weui/widget/weui-cell/weui-cell_global';                  
 @import '../../style/weui/widget/weui-loading/weui-loading.less'; 
 @import '../../style/weui/widget/weui-cell/weui-form/weui-form_common.less';
-.spd-label {
-  display: block;
-  word-wrap: break-word;
-  word-break: break-all;
-}
 </style>
