@@ -19,6 +19,7 @@ import Node from './components/node/index.vue'
 import Page from './components/page/index.vue'
 import Picker from './components/picker/index.vue'
 import Popup from './components/popup/index.vue'
+import Selector from './components/selector/index.vue'
 import Scroll from './components/scroll/index.vue'
 import Spinner from './components/spinner/index.vue'
 import WButton from './components/w-button/index.vue'
@@ -45,6 +46,7 @@ export {
   Page,
   Popup,
   Picker,
+  Selector,
   Scroll,
   Spinner,
   WButton

@@ -1,14 +1,14 @@
 <template>
 <node :type="nodeType0" class="weui-cell" :class="{'weui-cell_access': isLink}" :href="href" @click.native="onClick">
-  <div class="weui-cell__hd">
-    <label class="weui-label" :style="labelStyle" v-if="label">{{label}}</label>
+  <div class="weui-cell__hd" v-if="showhd">
+    <label class="weui-label" :style="labelStyle" v-if="label && label.length>0">{{label}}</label>
     <slot name="label"></slot>
   </div>
   <div class="weui-cell__bd">
     <p><slot>{{title}}</slot></p>
   </div>
   <div class="weui-cell__ft">
-    <span v-if="right">{{right}}</span>
+    <span v-if="right && right.length>0">{{right}}</span>
     <slot name="right">{{right}}</slot>
     <i class="weui-loading" v-if="isLoading"></i>
   </div>
@@ -34,7 +34,8 @@ export default {
   data () {
     return {
       nodeType0: 'a',
-      href: null
+      href: null,
+      showhd: true
     }
   },
   created () {
@@ -45,6 +46,7 @@ export default {
       this.nodeType0 = this.nodeType ? this.nodeType : 'div'
       this.href = null
     }
+    this.showhd = (this.label && this.label.length > 0) || this.$slots.label
   },
   computed: {
     labelStyle () {
