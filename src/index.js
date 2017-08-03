@@ -22,7 +22,6 @@ import Popup from './components/popup/index.vue'
 import Scroll from './components/scroll/index.vue'
 import Spinner from './components/spinner/index.vue'
 import WButton from './components/w-button/index.vue'
-import WRadioGroup from './components/w-radio-group/index.vue'
 
 export {
   ClickOutsideDirective,
@@ -48,6 +47,5 @@ export {
   Picker,
   Scroll,
   Spinner,
-  WButton,
-  WRadioGroup
+  WButton
 }

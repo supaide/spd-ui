@@ -1,5 +1,5 @@
 <template>
-  <group :title="title" :tips="tips" :class-name="float !== undefined ? 'spd-float-checkboxs' : ''">
+  <group :title="title" :tips="tips" :class-name="float !== undefined ? 'spd-checker-float' : ''">
   <checker :name="name0" :checkbox="checkbox" v-for="(value, key) in items" :key="key">
     {{value}}
   </checker>
@@ -22,7 +22,7 @@ export default {
       type: Object,
       required: true
     },
-    checkbox: Boolean,
+    checkbox: null,
     float: null
   },
   data () {
@@ -36,8 +36,5 @@ export default {
 }
 </script>
 <style lang="less">
-.spd-float-checkboxs {
-  display: flex;
-  flex-wrap: wrap;
-}
+@import '../../style/spd/widget/spd-checker/spd-checker.less';
 </style>
