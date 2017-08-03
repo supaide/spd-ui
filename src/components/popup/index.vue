@@ -1,7 +1,7 @@
 <template>
   <div v-show="show">
-    <div class="weui-mask popup-mask" ref="mask" v-show="showMask" @click="onMaskClick"></div>
-    <div class="weui-popup" ref="popup" :style="{background: background}">
+    <div :class="transparent === undefined ? 'weui-mask' : 'weui-mask_transparent'" class="weui-mask popup-mask" ref="mask" v-show="showMask" @click="onMaskClick"></div>
+    <div :class="className" class="weui-dialog" ref="popup" :style="{background: background}">
       <slot></slot>
     </div>
   </div>
@@ -12,7 +12,9 @@ import {$, util} from 'spd-webutil'
 let popupCache = {}
 export default {
   props: {
+    className: String,
     value: Boolean,
+    transparent: null,
     background: {
       type: String,
       default: '#fff'
@@ -47,9 +49,11 @@ export default {
       this.resetMask()
       $.getStyle(this.$el, 'transform'); 
       this.$refs.mask.classList.add('weui-animate-fade-in')
-      this.$refs.popup.classList.add('weui-animate-slide-up')
+      //this.$refs.popup.classList.add('weui-animate-slide-up')
+      //this.$refs.popup.classList.add('weui-animate-fade-in')
       this.$refs.mask.classList.remove('weui-animate-fade-out')
-      this.$refs.popup.classList.remove('weui-animate-slide-down') 
+      //this.$refs.popup.classList.remove('weui-animate-slide-down') 
+      this.$refs.popup.classList.remove('weui-animate-fade-out') 
       this.show = true
     },
     onHide () {
@@ -57,9 +61,11 @@ export default {
         return
       }
       this.$refs.mask.classList.add('weui-animate-fade-out')
-      this.$refs.popup.classList.add('weui-animate-slide-down') 
+      //this.$refs.popup.classList.add('weui-animate-slide-down') 
+      this.$refs.popup.classList.add('weui-animate-fade-out') 
       this.$refs.mask.classList.remove('weui-animate-fade-in')
-      this.$refs.popup.classList.remove('weui-animate-slide-up') 
+      //this.$refs.popup.classList.remove('weui-animate-slide-up') 
+      this.$refs.popup.classList.remove('weui-animate-fade-in') 
     },
     onMaskClick () {
       util.each(popupCache, (uid, vm) => {
@@ -67,7 +73,8 @@ export default {
       })
     },
     showListener () {
-      if (this.$refs.popup.className.indexOf('weui-animate-slide-down') > -1) {
+      //if (this.$refs.popup.className.indexOf('weui-animate-slide-down') > -1) {
+      if (this.$refs.popup.className.indexOf('weui-animate-fade-out') > -1) {
         this.show = false
       }
     }
@@ -90,6 +97,7 @@ export default {
 </script>
 <style lang="less">
 @import '../../style/weui/widget/weui-tips/weui-mask.less';
+@import '../../style/weui/widget/weui-tips/weui-dialog.less';
+@import '../../style/weui/widget/weui-tips/weui-toast.less';
 @import '../../style/weui/widget/weui-picker/weui-picker.less';
-@import '../../style/weui/widget/weui-animate/weui-animate.less';
 </style>

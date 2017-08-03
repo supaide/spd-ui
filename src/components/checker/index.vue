@@ -1,5 +1,5 @@
 <template>
-<label class="spd-checker" :class="checkerClass">
+<label class="spd-checker" :class="[className, checkerClass]">
   <span :class="right !== undefined ? 'spd-checker-right' : 'spd-checker-left'">
     <input type="radio" :name="name" ref="input">
     <span class="spd-checker-icon"></span>
@@ -10,6 +10,7 @@
 <script>
 export default {
   props: {
+    className: String,
     name: String,
     value: null,
     type: String,

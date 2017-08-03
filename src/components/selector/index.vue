@@ -1,18 +1,22 @@
 <template>
-<cell class="weui-cell_select" :class="(direction == 'before' || direction == 'after') ? 'weui-cell_select-'+direction : ''" :label="label0" :label-width="labelWidth" :label-align="labelAlign" :label-margin-right="labelMarginRight">
-  <select :slot="direction=='before' ? 'label' : null" :name="name" class="weui-select">
-    <option v-for="(text, value) in items" :key="value" :value="value">
-      {{text}}
-    </option>
-  </select>
-  <slot v-if="direction=='before'"></slot>
-</cell>
+<div>
+  <span @click="onClick" style="display:inline-block; width:100%;user-select: none;">点击选择</span>
+  <popup v-transfer-dom v-model="show" class-name="spd-selector">
+    <checker :name="name0" v-for="(text, value) in items" :value="value" :key="value" type="select" @click.native="onSel(value)">{{text}}</checker>
+  </popup>
+</div>
 </template>
 <script>
-import Cell from '../cell/index.vue'
+import Popup from '../popup/index.vue'
+import Checker from '../checker/index.vue'
+import TransferDom from '../../directives/transfer-dom/index.js'
 export default {
+  directives: {
+    TransferDom
+  },
   components: {
-    Cell
+    Popup,
+    Checker
   },
   props: {
     direction: String,
@@ -28,12 +32,26 @@ export default {
   },
   data () {
     return {
-      label0: ''
+      label0: '',
+      show: false,
+      name0: ''
     }
   },
   created () {
     if (this.label && this.direction != 'before') {
       this.label0 = this.label
+    }
+    this.$nextTick(()=>{
+      this.name0 = this.name ? this.name : 'select_'+this._uid
+    })
+  },
+  methods: {
+    onClick () {
+      this.show = true
+    },
+    onSel (value) {
+      console.log(value)
+      this.show = false
     }
   }
 }
@@ -43,4 +61,10 @@ export default {
 @import '../../style/weui/widget/weui-cell/weui-cell_global';
 @import '../../style/weui/widget/weui-cell/weui-form/weui-form_common';
 @import '../../style/weui/widget/weui-cell/weui-form/weui-select';
+.spd-selector {
+  padding: 5px 0;
+  label:hover {
+    background: #eee;
+  }
+}
 </style>
