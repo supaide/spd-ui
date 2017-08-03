@@ -1,8 +1,8 @@
 <template>
 <div>
-  <span @click="onClick" style="display:inline-block; width:100%;user-select: none;">点击选择</span>
+  <span @click="onClick" style="display:inline-block; width:100%;user-select: none;">{{currentText}}</span>
   <popup v-transfer-dom v-model="show" class-name="spd-selector">
-    <checker :name="name0" v-for="(text, value) in items" :value="value" :key="value" type="select" @click.native="onSel(value)">{{text}}</checker>
+    <checker :name="name0" v-for="item in items" :key="item[0]" :value="item[0]" type="select" @click.native="onSel(item[0], item[1])">{{item[1]}}</checker>
   </popup>
 </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   props: {
     direction: String,
     items: {
-      type: Object,
+      type: Array,
       required: true
     },
     name: String,
@@ -32,6 +32,8 @@ export default {
   },
   data () {
     return {
+      currentText: '',
+      currentValue: '',
       label0: '',
       show: false,
       name0: ''
@@ -44,13 +46,18 @@ export default {
     this.$nextTick(()=>{
       this.name0 = this.name ? this.name : 'select_'+this._uid
     })
+    if (this.items.length > 0) {
+      this.currentValue = this.items[0][0]
+      this.currentText = this.items[0][1]
+    }
   },
   methods: {
     onClick () {
       this.show = true
     },
-    onSel (value) {
-      console.log(value)
+    onSel (value, text) {
+      this.currentValue = value
+      this.currentText = text
       this.show = false
     }
   }
