@@ -1,6 +1,6 @@
 <template>
   <group :title="title" :tips="tips" :class-name="float !== undefined ? 'spd-checker-float' : ''">
-  <checker :name="name0" :checkbox="checkbox" v-for="(value, key) in items" :key="key">
+  <checker :name="name0" :color="color" :bg-color="bgColor" :type="type" v-for="(value, key) in items" :key="key">
     {{value}}
   </checker>
 </group>
@@ -18,11 +18,13 @@ export default {
     title: String,
     tips: String,
     name: String,
+    color: String,
+    bgColor: String,
+    type: String,
     items: {
       type: Object,
       required: true
     },
-    checkbox: null,
     float: null
   },
   data () {

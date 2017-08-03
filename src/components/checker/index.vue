@@ -1,5 +1,5 @@
 <template>
-<label class="spd-checker" :class="checkbox !== undefined ? 'spd-checkbox' : 'spd-radio'">
+<label class="spd-checker" :class="checkerClass">
   <span :class="right !== undefined ? 'spd-checker-right' : 'spd-checker-left'">
     <input type="radio" :name="name" ref="input">
     <span class="spd-checker-icon"></span>
@@ -12,14 +12,31 @@ export default {
   props: {
     name: String,
     value: null,
-    checkbox: null,
+    type: String,
+    color: {
+      type: String,
+      default: ''
+    },
+    bgColor: {
+      type: String,
+      default: ''
+    },
     right: null
   },
+  data () {
+    return {
+      checkerClass: 'spd-checker-radio'
+    }
+  },
   created () {
-    if (this.checkbox !== undefined) {
+    if (this.type == 'checkbox') {
       this.$nextTick(() => {
         this.$refs.input.setAttribute('type', 'checkbox')
       })
+      this.checkerClass = 'spd-checker-checkbox'
+    }
+    if (this.type == 'select') {
+      this.checkerClass = 'spd-checker-select'
     }
   } 
 }
