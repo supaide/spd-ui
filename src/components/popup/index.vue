@@ -1,7 +1,7 @@
 <template>
   <div v-show="show">
     <div :class="transparent === undefined ? 'weui-mask' : 'weui-mask_transparent'" class="weui-mask popup-mask" ref="mask" v-show="showMask" @click="onMaskClick"></div>
-    <div :class="className" class="weui-dialog" ref="popup" :style="{background: background}">
+    <div :class="className" class="weui-dialog" ref="popup" :style="popupStyle">
       <slot></slot>
     </div>
   </div>
@@ -13,12 +13,9 @@ let popupCache = {}
 export default {
   props: {
     className: String,
+    popupStyle: Object,
     value: Boolean,
-    transparent: null,
-    background: {
-      type: String,
-      default: '#fff'
-    }
+    transparent: null
   },
   data () {
     return {

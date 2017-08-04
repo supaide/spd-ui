@@ -1,8 +1,8 @@
 <template>
 <div>
-  <span @click="onClick" style="display:inline-block; width:100%;user-select: none;">{{currentText}}</span>
-  <popup v-transfer-dom v-model="show" class-name="spd-selector">
-    <checker :name="name0" v-for="item in items" :key="item[0]" :value="item[0]" type="select" @click.native="onSel(item[0], item[1])">{{item[1]}}</checker>
+  <span @click="onClick" class="spd-selector-label" ref="label">{{currentText}}</span>
+  <popup v-transfer-dom v-model="show" class-name="spd-selector" :popup-style="popupStyle">
+    <checker :name="name0" v-for="item in items" :key="item[0]" :value="item[0]" :type="type" @click.native="onSel(item[0], item[1])">{{item[1]}}</checker>
   </popup>
 </div>
 </template>
@@ -24,6 +24,10 @@ export default {
       type: Array,
       required: true
     },
+    type: {
+      type: String,
+      default: 'radio'
+    },
     name: String,
     label: String,
     labelWidth: String,
@@ -36,7 +40,8 @@ export default {
       currentValue: '',
       label0: '',
       show: false,
-      name0: ''
+      name0: '',
+      popupStyle: null
     }
   },
   created () {
@@ -45,6 +50,12 @@ export default {
     }
     this.$nextTick(()=>{
       this.name0 = this.name ? this.name : 'select_'+this._uid
+      this.popupStyle = {
+        maxHeight: (window.innerHeight - 150) + 'px',
+        overflowY: 'auto',
+        '-webkit-overflow-scrolling': 'touch'
+      }
+      console.log(this.popupStyle)
     })
     if (this.items.length > 0) {
       this.currentValue = this.items[0][0]
@@ -54,6 +65,13 @@ export default {
   methods: {
     onClick () {
       this.show = true
+      let w = this.$refs.label.offsetWidth
+      let h = this.$refs.label.offsetHeight
+      let l = this.$refs.label.offsetLeft
+      let t = this.$refs.label.getBoundingClientRect().top
+      console.log(this.$refs.label.getBoundingClientRect())
+      console.log('w: '+w+', h: '+h+', l: '+l+', t: '+t)
+      console.log(this.$refs.label.offsetParent)
     },
     onSel (value, text) {
       this.currentValue = value
@@ -69,9 +87,16 @@ export default {
 @import '../../style/weui/widget/weui-cell/weui-form/weui-form_common';
 @import '../../style/weui/widget/weui-cell/weui-form/weui-select';
 .spd-selector {
-  padding: 5px 0;
+  padding: 15px;
   label:hover {
     background: #eee;
   }
+  .spd-checker {
+    padding: 5px 0;
+  }
+}
+.spd-selector-label {
+  display:inline-block;
+  user-select: none;
 }
 </style>
