@@ -1,10 +1,13 @@
 <template>
-<div>
-  <span @click="onClick" class="spd-selector-label" ref="label">{{currentText}}</span>
+<span>
+  <span class="spd-selector-label" @click="onClick">
+    <span>{{label}}</span>
+    <span>{{currentText}}</span>
+  </span>
   <popup v-transfer-dom v-model="show" class-name="spd-selector" :popup-style="popupStyle">
-    <checker :name="name0" v-for="item in items" :key="item[0]" :value="item[0]" :type="type" @click.native="onSel(item[0], item[1])">{{item[1]}}</checker>
+    <checker :name="name0" v-for="item in items" :key="item[0]" :value="item[0]" :type="type" v-model="currentValue">{{item[1]}}</checker>
   </popup>
-</div>
+</span>
 </template>
 <script>
 import Popup from '../popup/index.vue'
@@ -20,6 +23,7 @@ export default {
   },
   props: {
     direction: String,
+    value: null,
     items: {
       type: Array,
       required: true
@@ -36,8 +40,9 @@ export default {
   },
   data () {
     return {
-      currentText: '',
-      currentValue: '',
+      defaultValues: [],
+      currentValue: null,
+      currentText: null,
       label0: '',
       show: false,
       name0: '',
@@ -48,35 +53,41 @@ export default {
     if (this.label && this.direction != 'before') {
       this.label0 = this.label
     }
+    this.name0 = this.name ? this.name : 'select_'+this._uid
+    if (this.items.length > 0) {
+      this.currentText = this.items[0][1]
+    }
+  },
+  mounted () {
     this.$nextTick(()=>{
-      this.name0 = this.name ? this.name : 'select_'+this._uid
       this.popupStyle = {
         maxHeight: (window.innerHeight - 150) + 'px',
         overflowY: 'auto',
         '-webkit-overflow-scrolling': 'touch'
       }
-      console.log(this.popupStyle)
     })
-    if (this.items.length > 0) {
-      this.currentValue = this.items[0][0]
-      this.currentText = this.items[0][1]
-    }
   },
   methods: {
     onClick () {
       this.show = true
-      let w = this.$refs.label.offsetWidth
-      let h = this.$refs.label.offsetHeight
-      let l = this.$refs.label.offsetLeft
-      let t = this.$refs.label.getBoundingClientRect().top
-      console.log(this.$refs.label.getBoundingClientRect())
-      console.log('w: '+w+', h: '+h+', l: '+l+', t: '+t)
-      console.log(this.$refs.label.offsetParent)
-    },
-    onSel (value, text) {
-      this.currentValue = value
-      this.currentText = text
+      //let w = this.$refs.label.offsetWidth
+      //let h = this.$refs.label.offsetHeight
+      //let l = this.$refs.label.offsetLeft
+      //let t = this.$refs.label.getBoundingClientRect().top
+      //console.log(this.$refs.label.getBoundingClientRect())
+      //console.log('w: '+w+', h: '+h+', l: '+l+', t: '+t)
+      //console.log(this.$refs.label.offsetParent)
+    }
+  },
+  watch: {
+    currentValue (vals) {
+      this.$emit('input', vals)
       this.show = false
+      console.log('vvv')
+    },
+    value (val) {
+      console.log(this.name0+'new value is :' + val)
+      this.currentValue = val
     }
   }
 }
@@ -96,7 +107,7 @@ export default {
   }
 }
 .spd-selector-label {
-  display:inline-block;
+  display:flex;
   user-select: none;
 }
 </style>
