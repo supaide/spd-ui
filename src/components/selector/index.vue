@@ -10,6 +10,7 @@
 </span>
 </template>
 <script>
+import {$} from 'spd-webutil'
 import Popup from '../popup/index.vue'
 import Checker from '../checker/index.vue'
 import TransferDom from '../../directives/transfer-dom/index.js'
@@ -22,8 +23,8 @@ export default {
     Checker
   },
   props: {
-    direction: String,
     value: null,
+    direction: String,
     items: {
       type: Array,
       required: true
@@ -40,7 +41,6 @@ export default {
   },
   data () {
     return {
-      defaultValues: [],
       currentValue: null,
       currentText: null,
       label0: '',
@@ -54,20 +54,39 @@ export default {
       this.label0 = this.label
     }
     this.name0 = this.name ? this.name : 'select_'+this._uid
-    if (this.items.length > 0) {
-      this.currentText = this.items[0][1]
-    }
   },
   mounted () {
     this.$nextTick(()=>{
       this.popupStyle = {
-        maxHeight: (window.innerHeight - 150) + 'px',
+        maxHeight: (window.innerHeight - 100) + 'px',
         overflowY: 'auto',
         '-webkit-overflow-scrolling': 'touch'
+      }
+      if (this.currentValue === null && this.items) {
+        this.currentValue = this.items[0][0]
+      } else {
+        this.updateLabelText()
       }
     })
   },
   methods: {
+    updateLabelText () {
+      if (this.currentValue === null) {
+        this.currentText = null
+        return
+      }
+      let value = this.currentValue
+      if (Object.prototype.toString.call(value) !== '[object Array]') {
+        value = [value]
+      }
+      let texts = []
+      for (let i=0; i<this.items.length; i++) {
+        if (value.indexOf(this.items[i][0]) >= 0) {
+          texts.push(this.items[i][1])
+        }
+      }
+      this.currentText = texts.join(',').truncate(10)
+    },
     onClick () {
       this.show = true
       //let w = this.$refs.label.offsetWidth
@@ -83,10 +102,9 @@ export default {
     currentValue (vals) {
       this.$emit('input', vals)
       this.show = false
-      console.log('vvv')
+      this.updateLabelText()
     },
     value (val) {
-      console.log(this.name0+'new value is :' + val)
       this.currentValue = val
     }
   }

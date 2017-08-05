@@ -1,6 +1,6 @@
 <template>
   <group :title="title" :tips="tips" :class-name="float !== undefined ? 'spd-checker-float' : ''">
-  <checker :multi="multi" :name="name0" :color="color" :bg-color="bgColor" :type="type" v-for="item in items" :key="item[0]" :value="item[0]" v-model="values">
+  <checker :multi="multi" :name="name0" :color="color" :bg-color="bgColor" :type="type" v-for="item in items" :key="item[0]" :value="item[0]" v-model="currentValue" ref="checker">
     {{item[1]}}
   </checker>
 </group>
@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      values: [],
+      currentValue: this.value,
       name0: ''
     }
   },
@@ -39,8 +39,11 @@ export default {
     this.name0 = this.name ? this.name : 'checkers-'+this._uid
   },
   watch: {
-    values (vals) {
+    currentValue (vals) {
       this.$emit('input', vals)
+    },
+    value (vals) {
+      this.currentValue = vals
     }
   }
 }
