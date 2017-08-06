@@ -7,7 +7,7 @@
   }
   .spd-checker-right {
     flex-direction: row-reverse;
-    justify-content: space-between;
+    //justify-content: start;
     margin: 0 15px;
   }
   input {
@@ -85,6 +85,8 @@
 }
 .spd-checker-select {
   .spd-checker-icon {
+    background-color: transparent;
+    border: 1px solid transparent;
     &:after {
       border: 2px solid transparent;
       border-left: 0;
@@ -97,6 +99,8 @@
     }
   }
   input:checked + .spd-checker-icon {
+    background-color: transparent;
+    border-color: transparent;
     &:after {
       border-color: #26a2ff;
       transform: rotate(45deg) scale(1);
