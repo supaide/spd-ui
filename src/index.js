@@ -23,6 +23,7 @@ import Selector from './components/selector/index.vue'
 import Scroll from './components/scroll/index.vue'
 import Spinner from './components/spinner/index.vue'
 import WButton from './components/w-button/index.vue'
+import WInput from './components/w-input/index.vue'
 
 export {
   ClickOutsideDirective,
@@ -49,5 +50,6 @@ export {
   Selector,
   Scroll,
   Spinner,
-  WButton
+  WButton,
+  WInput
 }
