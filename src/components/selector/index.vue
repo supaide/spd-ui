@@ -5,7 +5,7 @@
     <span>{{currentText}}</span>
   </span>
   <popup v-transfer-dom v-model="show" class-name="spd-selector" :popup-style="popupStyle">
-    <checker :name="name0" v-for="item in items" :key="item[0]" :value="item[0]" :type="type" v-model="currentValue">{{item[1]}}</checker>
+    <checker :name="name0" v-for="item in items" :key="item[0]" :value="item[0]" :type="type" v-model="currentValue" :disabled="item[2] ? 'true' : null">{{item[1]}}</checker>
   </popup>
 </span>
 </template>

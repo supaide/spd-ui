@@ -22,6 +22,7 @@ export default {
       type: String,
       required: true
     },
+    disabled: null,
     multi: null,
     value: [String, Number, Boolean],
     type: {
@@ -61,6 +62,11 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
+      if (this.disabled === undefined || this.disabled === false || this.disabled === null) {
+        this.$refs.input.disabled = false
+      } else {
+        this.$refs.input.disabled = true
+      }
       this.setValue(this.mvalue)
     })
   },

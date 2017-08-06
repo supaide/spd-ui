@@ -1,6 +1,6 @@
 <template>
   <group :title="title" :tips="tips" :class-name="float !== undefined ? 'spd-checker-float' : ''">
-  <checker :multi="multi" :name="name0" :color="color" :bg-color="bgColor" :type="type" v-for="item in items" :key="item[0]" :value="item[0]" v-model="currentValue" ref="checker">
+  <checker :multi="multi" :name="name0" :color="color" :bg-color="bgColor" :type="type" v-for="item in items" :key="item[0]" :value="item[0]" v-model="currentValue" ref="checker" :disabled="item[2] ? 'true' : null">
     {{item[1]}}
   </checker>
 </group>
