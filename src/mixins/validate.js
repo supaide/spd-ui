@@ -10,6 +10,7 @@ export default {
   },
   data () {
     return {
+      warn: false,
       currentValue: '',
       validators: [],
       error: ''
@@ -78,7 +79,9 @@ export default {
           error = this.title + '不正确'
         }
         this.error = error
+        this.warn = true
       } else {
+        this.warn = false
         this.error = ''
       }
       return status

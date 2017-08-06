@@ -69,8 +69,7 @@ export default {
   },
   data () {
     return {
-      value: this.mvalue,
-      warn: false,
+      value: this.mvalue
     }
   },
   computed: {
