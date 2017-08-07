@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import {util} from 'spd-webutil'
+import {event} from 'spd-webutil'
 export default {
   name: 'page',
   props: {
@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     back () {
-      util.event.emit('navbarback')
+      event.emit('navbarback')
       this.$emit('on-back-click')
     },
     rightClick () {
