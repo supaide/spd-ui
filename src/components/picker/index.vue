@@ -6,6 +6,10 @@ import {picker, datePicker} from './picker'
 import Node from '../node/index.vue'
 export default {
   props: {
+    showCancel: {
+      type: Boolean,
+      default: true
+    },
     nodeType: { // html node type
       type: String,
       default: 'div'
@@ -18,27 +22,11 @@ export default {
       type: String,
       default: 'picker'
     },
-    items: { // picker的数据
-      type: Array,
-      default: null
-    },
+    items: Array, // picker的数据
     depth: Number,
-    defaultValue: { // 默认选项的value数组
-      type: Array,
-      default: null
-    },
-    className: { // 容器样式名
-      type: String,
-      default: ''
-    },
-    onChange: { // 在picker选中的值发生变化的时候回调
-      type: Function,
-      default: null
-    },
-    onConfirm: { // 在点击"确定"之后的回调
-      type: Function,
-      default: null
-    },
+    defaultValue: Array, // 默认选项的value数组
+    title: String,
+    className: String,
     start: { // 起始年份，如果是 Number 类型，表示起始年份；如果是 String 类型，格式为 'YYYY-MM-DD'；如果是 Date 类型，就传一个 Date
       type: [String, Number, Date],
       default: 2000
@@ -59,12 +47,15 @@ export default {
     clickHandler () {
       let options = {
         id: this.id,
+        showCancel: this.showCancel,
         className: this.className,
+        title: this.title,
         defaultValue: this.defaultValue,
         onChange: (result) => {
           this.$emit('on-change', result)
         },
         onConfirm: (result) => {
+          this.picker = null
           this.$emit('on-confirm', result)
         }
       }

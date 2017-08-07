@@ -23,7 +23,8 @@ let pickerTpl = `<div class="<%= className %>">
     <div class="weui-mask"></div>
     <div class="weui-picker">
         <div class="weui-picker__hd">
-            <a href="javascript:;" data-action="cancel" class="weui-picker__action">取消</a>
+            <a href="javascript:;" data-action="cancel" class="weui-picker__action"><% if (showCancel) {%>取消<% } %></a>
+            <div class="weui-picker__title"><%= title %></div>
             <a href="javascript:;" data-action="select" class="weui-picker__action" id="weui-picker-confirm">确定</a>
         </div>
         <div class="weui-picker__bd"></div>
@@ -205,9 +206,12 @@ function picker() {
     const options = arguments[arguments.length - 1];
     const defaults = $.extend({
         id: 'default',
+        title: '',
         className: '',
         container: 'body',
         onChange: $.noop,
+        showCancel: true,
+        onHide: $.noop,
         onConfirm: $.noop
     }, options);
 
@@ -252,6 +256,8 @@ function picker() {
                 $picker.remove();
                 _sington = false;
                 callback && callback();
+                defaults.onHide && defaults.onHide();
+                
             });
     }
     function hide(callback){ _hide(callback); }
@@ -345,7 +351,14 @@ function picker() {
 
     $picker
         .on('click', '.weui-mask', function () { hide(); })
-        .on('click', '.weui-picker__action', function () { hide(); })
+        .on('click', '.weui-picker__action', function (e) {
+          if (!defaults.showCancel) {
+            if (e.target.getAttribute('data-action') == 'cancel') {
+              return;
+            }
+          }
+          hide(); 
+        })
         .on('click', '#weui-picker-confirm', function () {
             defaults.onConfirm(result);
         });
@@ -429,6 +442,9 @@ function datePicker(options) {
         id: 'datePicker',
         onChange: $.noop,
         onConfirm: $.noop,
+        title: '',
+        showCancel: true,
+        onHide: $.noop,
         start: 2000,
         end: 2030,
         cron: '* * *'
