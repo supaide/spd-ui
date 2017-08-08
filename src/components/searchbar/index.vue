@@ -6,7 +6,8 @@
     <div class="weui-search-bar__box">
       <i class="weui-icon-search"></i>
       <input type="search" class="weui-search-bar__input" placeholder="搜索" ref="search" :id="inputId" v-model="searchText" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off" />
-      <a href="javascript:" class="weui-icon-clear" ref="clear" @click="onClear"></a>
+      <a v-show="!loading" href="javascript:" class="weui-icon-clear" ref="clear" @click="onClear"></a>
+      <a v-show="loading" href="javascript:" class="weui-loading"></a>
     </div>
     <label :for="inputId" class="weui-search-bar__label" ref="text" @click="onLabelClick">
       <i class="weui-icon-search"></i>
@@ -35,6 +36,7 @@
 <script>
 export default {
   props: {
+    loading: Boolean,
     showMask: Boolean,
     resultHeight: String,
     text: {
@@ -135,4 +137,9 @@ export default {
 @import '../../style/weui/widget/weui-searchbar/weui-searchbar';
 @import '../../style/weui/widget/weui-cell/weui-cell_global';
 @import '../../style/weui/widget/weui-cell/weui-access';
+.weui-search-bar .weui-loading {
+  position: absolute;
+  top: 4px;
+  right: 10px;
+}
 </style>
