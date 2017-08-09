@@ -1,6 +1,6 @@
 <template>
-<div>
-
+<div class="spd-search-bar">
+<slot name="label"></slot>
 <div class="weui-search-bar" :class="focus ? 'weui-search-bar_focusing' : null">
   <form class="weui-search-bar__form">
     <div class="weui-search-bar__box">
@@ -42,10 +42,6 @@ export default {
       type: String,
       required: true
     },
-    resultLeft: {
-      type: String,
-      default: '0'
-    },
     text: {
       type: String,
       default: '搜索'
@@ -74,7 +70,7 @@ export default {
           position: 'absolute',
           width: '100%',
           zIndex: 1000,
-          left: this.resultLeft
+          top: (window.innerHeight - (this.resultHeight.replace(/px/ig, '') - 0)) + 'px'
         }
       } else {
         return null
@@ -149,5 +145,12 @@ export default {
   position: absolute;
   top: 4px;
   right: 10px;
+}
+.spd-search-bar {
+  display: flex;
+  align-items: center;
+  .weui-search-bar {
+    flex: 1;
+  }
 }
 </style>
