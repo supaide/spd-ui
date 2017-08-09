@@ -38,7 +38,14 @@ export default {
   props: {
     loading: Boolean,
     showMask: Boolean,
-    resultHeight: String,
+    resultHeight: {
+      type: String,
+      required: true
+    },
+    resultLeft: {
+      type: String,
+      default: '0'
+    },
     text: {
       type: String,
       default: '搜索'
@@ -66,7 +73,8 @@ export default {
           marginTop: 0,
           position: 'absolute',
           width: '100%',
-          zIndex: 1000
+          zIndex: 1000,
+          left: this.resultLeft
         }
       } else {
         return null
