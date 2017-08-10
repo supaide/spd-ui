@@ -1,36 +1,37 @@
 <template>
-<div class="spd-search-bar">
-<slot name="label"></slot>
-<div class="weui-search-bar" :class="focus ? 'weui-search-bar_focusing' : null">
-  <form class="weui-search-bar__form">
-    <div class="weui-search-bar__box">
-      <i class="weui-icon-search"></i>
-      <input type="search" class="weui-search-bar__input" placeholder="搜索" ref="search" :id="inputId" v-model="searchText" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off" />
-      <a v-show="!loading" href="javascript:" class="weui-icon-clear" ref="clear" @click="onClear"></a>
-      <a v-show="loading" href="javascript:" class="weui-loading"></a>
-    </div>
-    <label :for="inputId" class="weui-search-bar__label" ref="text" @click="onLabelClick">
-      <i class="weui-icon-search"></i>
-      <span>{{text}}</span>
-    </label>
-  </form>
-  <a href="javascript:" class="weui-search-bar__cancel-btn" @click="cancel">取消</a>
-</div>
-<div v-show="showMask" class="weui-mask" :style="maskStyle"></div>
-<div class="weui-cells weui-cells_access search_show" :style="resultStyle">
-  <slot></slot>
-  <!--div class="weui-cell">
-    <div class="weui-cell__bd weui-cell_primary">
-      <p>实时搜索文本</p>
+<div>
+  <div class="spd-search-bar">
+    <slot name="label"></slot>
+    <div class="weui-search-bar" :class="focus ? 'weui-search-bar_focusing' : null">
+      <form class="weui-search-bar__form">
+        <div class="weui-search-bar__box">
+          <i class="weui-icon-search"></i>
+          <input type="search" class="weui-search-bar__input" placeholder="搜索" ref="search" :id="inputId" v-model="searchText" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off" />
+          <a v-show="!loading" href="javascript:" class="weui-icon-clear" ref="clear" @click="onClear"></a>
+          <a v-show="loading" href="javascript:" class="weui-loading"></a>
+        </div>
+        <label :for="inputId" class="weui-search-bar__label" ref="text" @click="onLabelClick">
+          <i class="weui-icon-search"></i>
+          <span>{{text}}</span>
+        </label>
+      </form>
+      <a href="javascript:" class="weui-search-bar__cancel-btn" @click="cancel">取消</a>
     </div>
   </div>
-  <div class="weui-cell">
-    <div class="weui-cell__bd weui-cell_primary">
-      <p>实时搜索文本</p>
+  <div v-show="showMask" class="weui-mask" :style="maskStyle"></div>
+  <div class="weui-cells weui-cells_access search_show" :style="resultStyle">
+    <slot></slot>
+    <!--div class="weui-cell">
+      <div class="weui-cell__bd weui-cell_primary">
+        <p>实时搜索文本</p>
+      </div>
     </div>
-  </div-->
-</div>
-
+    <div class="weui-cell">
+      <div class="weui-cell__bd weui-cell_primary">
+        <p>实时搜索文本</p>
+      </div>
+    </div-->
+  </div>
 </div>
 </template>
 <script>
@@ -68,8 +69,10 @@ export default {
           overflowY: 'auto',
           marginTop: 0,
           position: 'absolute',
-          width: '100%',
-          zIndex: 1000,
+          //width: '100%',
+          zIndex: 1010,
+          left: 0,
+          right: 0,
           top: (window.innerHeight - (this.resultHeight.replace(/px/ig, '') - 0)) + 'px'
         }
       } else {
@@ -151,6 +154,9 @@ export default {
   align-items: center;
   .weui-search-bar {
     flex: 1;
+  }
+  .search_show {
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>
