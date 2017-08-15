@@ -97,4 +97,5 @@ export default {
 @import '../../style/weui/widget/weui-tips/weui-dialog.less';
 @import '../../style/weui/widget/weui-tips/weui-toast.less';
 @import '../../style/weui/widget/weui-picker/weui-picker.less';
+@import '../../style/weui/widget/weui-loading/weui-loading.less';
 </style>
