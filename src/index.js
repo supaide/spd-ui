@@ -5,6 +5,7 @@ import TransferDomDirective from './directives/transfer-dom/index.js'
 
 import Installer from './plugins/install.js'
 
+import Admin from './components/admin/index.vue'
 import ActionSheet from './components/actionSheet/index.vue'
 import Badge from './components/badge/index.vue'
 import Cell from './components/cell/index.vue'
@@ -31,6 +32,7 @@ export {
 
   Installer,
 
+  Admin,
   ActionSheet,
   Badge,
   Cell,

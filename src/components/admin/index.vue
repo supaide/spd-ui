@@ -1,0 +1,109 @@
+<template>
+<div class="spd" :class="!largeScreen ? 'spd-min' : null">
+  <header>
+    <div class="spd-logo">
+      <span class="spd-logo-lg">速派得CMS</span>
+      <span class="spd-logo-min">速</span>
+    </div>
+    <div class="spd-sidebar-btn i-align-justify" @click="sidebarToggle"></div>
+    <div class="spd-header-content">content</div>
+  </header>
+  <nav class="spd-sidebar">
+    <ul>
+      <li class="spd-sidebar-navs" v-for="(item, index) in menus" :key="index" @click.stop.prevent="onSel">
+        <a class="spd-nav-header">
+          <span :class="item.logo"></span>
+          <span class="spd-nav-header__title">{{item.title}}</span>
+          <span class="spd-sidebar-arrow i-chevron-down"></span>
+        </a>
+        <ul class="spd-subnavs">
+          <li v-for="(subItem, index2) in item.subs" :key="index2"><a :href="subItem.url">{{subItem.title}}</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  <div class="spd-main">
+    <nav class="spd-breadcrumb breadcrumb" v-if="breadCrumbs && breadCrumbs.length > 0">
+      <a class="breadcrumb-item" :href="item.url" v-for="(item, index) in breadCrumbs" :key="index" v-if="index<breadCrumbs.length-1">{{item.title}}</a>
+      <span class="breadcrumb-item active">{{breadCrumbs[breadCrumbs.length-1].title}}</span>
+    </nav>
+		<slot></slot>
+  </div>
+  <footer class="spd-footer">
+    <p>© Company 2017</p>
+  </footer>
+</div>
+</template>
+<script>
+export default {
+  props: {
+    breadCrumbs: Array,
+    menus: Array
+  },
+	data () {
+    return {
+      largeScreen: true,
+    }
+  },
+  created () {
+    this.largeScreen = window.innerWidth > 768
+  },
+  methods: {
+    sidebarToggle () {
+      document.querySelector('.spd').classList.toggle('spd-min')
+      let minStyle = document.querySelector('.spd').classList.contains('spd-min')
+      let lis = document.querySelectorAll('.spd-sidebar>ul>li')
+      for (let i=0; i<lis.length; i++) {
+        lis[i].classList.remove('active')
+        let subNavs = lis[i].querySelector('.spd-subnavs')
+        let height = subNavs.style.height
+        if (height == '0px') {
+          subNavs.style.height = minStyle ? 'auto' : null
+        } else if (height == 'auto') {
+          subNavs.style.height = null
+        } else if (!minStyle && height) {
+          lis[i].classList.add('active')
+        }
+      }
+    },
+    onSel(e) {
+      let node = e.target
+      let finded = false
+      for (let i=0; i<3; i++) {
+        if (node.tagName.toLowerCase() == 'li' && node.classList.contains('spd-sidebar-navs')) {
+          finded = true
+          break
+        }
+        node = node.parentNode
+      }
+      if (!finded) {
+        return
+      }
+      let currentActive = node.classList.contains('active')
+      let minStyle = document.querySelector('.spd').classList.contains('spd-min')
+      if (minStyle) {
+        return
+      }
+      let lis = document.querySelectorAll('.spd-sidebar>ul>li')
+      for (let i=0; i<lis.length; i++) {
+        lis[i].classList.remove('active')
+        lis[i].querySelector('.spd-subnavs').style.height = minStyle ? 'auto' : '0'
+      }
+      if (currentActive) {
+        return
+      }
+      node.classList.add('active')
+      let subnavs = node.querySelector('.spd-subnavs')
+      let height = 0
+      lis = subnavs.querySelectorAll('li')
+      for (let i=0; i<lis.length; i++) {
+        height += parseFloat(window.getComputedStyle(lis[i]).height)
+      }
+      subnavs.style.height = height + 'px'
+    }
+  }
+}
+</script>
+<style lang="less">
+@import '../../style/spd/widget/spd-admin/spd-admin.less';
+</style>
