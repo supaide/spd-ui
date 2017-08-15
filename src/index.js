@@ -1,5 +1,3 @@
-import Style from './style/index.vue'
-
 import ClickOutsideDirective from './directives/click-outside/index.js'
 import InviewDirective from './directives/inview/index.js'
 import TransferDom from './directives/transfer-dom/index.js'
@@ -16,7 +14,6 @@ import {Flex, FlexItem} from './components/flex'
 import {Grid, GridItem} from './components/grid'
 import Group from './components/group/index.vue'
 import Node from './components/node/index.vue'
-import Page from './components/page/index.vue'
 import Picker from './components/picker/index.vue'
 import Popup from './components/popup/index.vue'
 import Scroll from './components/scroll/index.vue'
@@ -45,7 +42,6 @@ export {
   GridItem,
   Group,
   Node,
-  Page,
   Popup,
   Picker,
   Scroll,
