@@ -114,7 +114,7 @@
   position: relative;
   height: 100%;
   width: 100%;
-  padding: 50px 0 40px @adminSiderWidth;
+  padding: 50px 0 40px 0;
   transition: transform .3s ease-in-out,padding .3s ease-in-out;
 }
 .spd-footer {
@@ -139,6 +139,9 @@
   }
 }
 @media (min-width: 768px) {
+  .spd-main {
+    padding: 50px 0 40px @adminSiderWidth;
+  }
   .spd-min {
     .spd-nav-header {
       display: block;
