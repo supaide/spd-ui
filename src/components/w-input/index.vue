@@ -8,6 +8,7 @@
     <input
        type="text"
        class="weui-input"
+       :class="inputClass"
        :placeholder="placeholder"
        :readonly="readonly"
        :disabled="disabled"
@@ -20,7 +21,7 @@
   </div>
   <div class="weui-cell__ft">
     <i class="weui-icon-clear" @click="clear" v-show="!readonly && !disabled && value && showClear"></i>
-    <i class="weui-icon-warn" v-show="warn"></i>
+    <i class="weui-icon-warn" v-show="warn && showWarn"></i>
     <slot name="right" class="spd-right"></slot>
   </div>
 </div>
@@ -34,6 +35,7 @@ export default {
     event: 'change'
   },
   props: {
+    inputClass: String,
     mvalue: null,
     type: {
       type: String,
@@ -43,7 +45,8 @@ export default {
     titleWidth: String,
     titleAlign: String,
     titleMarginRight: String,
-    showClear: {
+    showClear: Boolean,
+    showWarn: {
       type: Boolean,
       default: true
     },

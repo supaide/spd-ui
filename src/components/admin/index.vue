@@ -1,6 +1,6 @@
 <template>
 <div class="spd" :class="!largeScreen ? 'spd-min' : null">
-  <header>
+  <header v-show="!blank">
     <div class="spd-logo">
       <span class="spd-logo-lg">速派得CMS</span>
       <span class="spd-logo-min">速</span>
@@ -8,7 +8,7 @@
     <div class="spd-sidebar-btn i-align-justify" @click="sidebarToggle"></div>
     <div class="spd-header-content">content</div>
   </header>
-  <nav class="spd-sidebar">
+  <nav class="spd-sidebar" v-show="!blank">
     <ul>
       <li class="spd-sidebar-navs" v-for="(item, index) in menus" :key="index" @click.stop.prevent="onSel">
         <a class="spd-nav-header">
@@ -22,21 +22,26 @@
       </li>
     </ul>
   </nav>
-  <div class="spd-main">
+  <div class="spd-main" :class="blank ? 'spd-empty-main' : null" ref="main">
     <nav class="spd-breadcrumb breadcrumb" v-if="breadCrumbs && breadCrumbs.length > 0">
       <a class="breadcrumb-item" :href="item.url" v-for="(item, index) in breadCrumbs" :key="index" v-if="index<breadCrumbs.length-1">{{item.title}}</a>
       <span class="breadcrumb-item active">{{breadCrumbs[breadCrumbs.length-1].title}}</span>
     </nav>
 		<slot></slot>
   </div>
-  <footer class="spd-footer">
+  <footer class="spd-footer" v-show="!blank">
     <p>© Company 2017</p>
   </footer>
 </div>
 </template>
 <script>
+import {$} from 'spd-webutil'
 export default {
   props: {
+    blank: {
+      type: Boolean,
+      default: true
+    },
     breadCrumbs: Array,
     menus: Array
   },
@@ -100,6 +105,16 @@ export default {
         height += parseFloat(window.getComputedStyle(lis[i]).height)
       }
       subnavs.style.height = height + 'px'
+    }
+  },
+  watch: {
+    blank (val) {
+      this.$nextTick(()=>{
+        this.$refs.main.classList.add('spd-notransition')
+      })
+      setTimeout(()=>{
+        this.$refs.main.classList.remove('spd-notransition')
+      }, 500)
     }
   }
 }
