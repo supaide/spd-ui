@@ -21,8 +21,14 @@ import Scroll from './components/scroll/index.vue'
 import Selector from './components/selector/index.vue'
 import SearchBar from './components/searchbar/index.vue'
 import Spinner from './components/spinner/index.vue'
+import VLink from './components/v-link/index.vue'
 import WButton from './components/w-button/index.vue'
 import WInput from './components/w-input/index.vue'
+
+// bootstrap ui
+import BModal from './components/b-modal/index.vue'
+
+import City from './components/city/index.vue'
 
 export {
   ClickOutsideDirective,
@@ -50,6 +56,11 @@ export {
   SearchBar,
   Selector,
   Spinner,
+  VLink,
   WButton,
-  WInput
+  WInput,
+
+  BModal,
+
+  City
 }

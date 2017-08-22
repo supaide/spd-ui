@@ -1,11 +1,7 @@
 <template>
-<label :name="name" class="spd-checker" :class="[className, checkerClass]">
-  <span :class="right !== undefined ? 'spd-checker-right' : 'spd-checker-left'">
-    <input v-if="!multi0" type="radio" :name="name" :value="value" ref="input" @click="onClick">
-    <input v-if="multi0" type="checkbox" :name="name" :value="value" ref="input" @click="onClick">
-    <span class="spd-checker-icon" :class="actived ? 'spd-checked-actived' : null"></span>
-    <span class="spd-checker-title"><slot></slot></span>
-  </span>
+<label :style="{'margin-right': marginRight ? marginRight : null}">
+  <input type="radio" :name="name0" :value="value" ref="input" @click="onClick" :disabled="disabled" :style="{'margin-right': space ? space : null}">
+  <slot></slot>
 </label>
 </template>
 <script>
@@ -16,82 +12,60 @@ export default {
     event: 'change'
   },
   props: {
+    marginRight: {
+      type: String,
+      default: '10px'
+    },
+    space: String,
     mvalue: null,
-    className: String,
-    name: {
-      type: String,
-      required: true
-    },
-    disabled: null,
-    multi: null,
-    value: [String, Number, Boolean],
-    type: {
-      type: String,
-      default: 'radio'
-    },
-    color: {
-      type: String,
-      default: ''
-    },
-    bgColor: {
-      type: String,
-      default: ''
-    },
-    right: null
-  },
-  data () {
-    return {
-      actived: false,
-      multi0: false,
-      checkerClass: 'spd-checker-radio'
+    name: String,
+    disabled: Boolean,
+    multi: Boolean,
+    value: {
+      type: [String, Number, Boolean],
+      default: true
     }
   },
-  created () {
-    if (this.type == 'checkbox') {
-      this.checkerClass = 'spd-checker-checkbox'
-      if (this.multi === undefined) {
-        this.multi0 = true
-      }
-    }
-    if (this.type == 'select') {
-      this.checkerClass = 'spd-checker-select'
-    }
-    if (this.multi !== undefined && this.multi !== false) {
-      this.multi0 = true
+  computed: {
+    name0 () {
+      return this.name || 'checked_' + this._uid
     }
   },
   mounted () {
     this.$nextTick(() => {
-      if (this.disabled === undefined || this.disabled === false || this.disabled === null) {
-        this.$refs.input.disabled = false
-      } else {
-        this.$refs.input.disabled = true
+      if (this.multi) {
+        this.$refs.input.setAttribute('type', 'checkbox')
       }
       this.setValue(this.mvalue)
     })
   },
   methods: {
+    typeValue (val) {
+      let type = typeof this.value
+      if (type === 'boolean') {
+        return val === 'true'
+      } else if (type === 'number') {
+        return parseFloat(val)
+      }
+      return val
+    },
     setValue (val) {
+      val = [].concat(val)
       let checked = false
-      if (this.multi0) {
-        if (val && val.indexOf(this.value) >= 0) {
-          checked = true
-        }
-      } else {
-        if (this.value === val) {
-          checked = true
-        }
+      if (val.indexOf(this.value) > -1) {
+        checked = true
       }
       this.$refs.input.checked = checked 
     },
     onClick () {
       let values = []
-      $('input[name='+this.name+']').forEach((target) => {
+      let $targets = $('input[name='+this.name+']')
+      $targets.forEach((target) => {
         if (target.checked) {
-          values.push(target.value)
+          values.push(this.typeValue(target.value))
         }
       })
-      if (!this.multi0) {
+      if (!this.multi || $targets.length == 1) {
         values = values.pop()
       }
       this.$emit('change', values)
@@ -104,6 +78,3 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import '../../style/spd/widget/spd-checker/spd-checker.less';
-</style>

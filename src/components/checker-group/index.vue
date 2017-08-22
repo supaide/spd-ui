@@ -1,33 +1,26 @@
 <template>
-  <group :title="title" :tips="tips" :class-name="float !== undefined ? 'spd-checker-float' : ''">
-  <checker :multi="multi" :name="name0" :color="color" :bg-color="bgColor" :type="type" v-for="item in items" :key="item[0]" :value="item[0]" v-model="currentValue" ref="checker" :disabled="item[2] ? 'true' : null">
+<div>
+  <checker :space="space" :margin-right="marginRight" :multi="multi" :name="name0" v-for="item in items" :key="item[0]" :value="item[0]" v-model="currentValue" ref="checker" :disabled="item[2] ? true : null">
     {{item[1]}}
   </checker>
-</group>
+</div>
 </template>
 <script>
-import Group from '../group/index.vue'
 import Checker from '../checker/index.vue'
-import {util} from 'spd-webutil'
 export default {
   components: {
-    Group,
     Checker
   },
   props: {
+    marginRight: String,
+    space: String,
     value: null,
-    title: String,
-    tips: String,
     name: String,
-    color: String,
-    bgColor: String,
-    multi: null,
-    type: String,
+    multi: Boolean,
     items: {
       type: Array,
       required: true
-    },
-    float: null
+    }
   },
   data () {
     return {
@@ -48,6 +41,3 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import '../../style/spd/widget/spd-checker/spd-checker.less';
-</style>

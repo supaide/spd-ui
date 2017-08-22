@@ -1,7 +1,7 @@
 <template>
 <div class="weui-cell" :class="warn ? 'weui-cell_warn' : null">
   <div class="weui-cell__hd"> 
-    <label class="weui-label" :style="titleStyle" v-if="title && title.length>0">{{title}}</label>
+    <label class="weui-label" :style="titleStyle" :class="titleClass" v-if="title && title.length>0">{{title}}</label>
     <slot name="title"></slot>
   </div>
   <div class="weui-cell__bd">
@@ -35,6 +35,7 @@ export default {
     event: 'change'
   },
   props: {
+    titleClass: String,
     inputClass: String,
     mvalue: null,
     type: {

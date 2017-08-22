@@ -17,14 +17,14 @@
           <span class="spd-sidebar-arrow i-chevron-down"></span>
         </a>
         <ul class="spd-subnavs">
-          <li v-for="(subItem, index2) in item.subs" :key="index2"><a :href="subItem.url">{{subItem.title}}</a></li>
+          <li v-for="(subItem, index2) in item.subs" :key="index2"><v-link :href="subItem.url">{{subItem.title}}</v-link></li>
         </ul>
       </li>
     </ul>
   </nav>
   <div class="spd-main" :class="blank ? 'spd-empty-main' : null" ref="main">
     <nav class="spd-breadcrumb breadcrumb" v-if="breadCrumbs && breadCrumbs.length > 0">
-      <a class="breadcrumb-item" :href="item.url" v-for="(item, index) in breadCrumbs" :key="index" v-if="index<breadCrumbs.length-1">{{item.title}}</a>
+      <v-link class="breadcrumb-item" :href="item.url" v-for="(item, index) in breadCrumbs" :key="index" v-if="index<breadCrumbs.length-1">{{item.title}}</v-link>
       <span class="breadcrumb-item active">{{breadCrumbs[breadCrumbs.length-1].title}}</span>
     </nav>
 		<slot></slot>
@@ -36,7 +36,11 @@
 </template>
 <script>
 import {$} from 'spd-webutil'
+import VLink from '../v-link/index.vue'
 export default {
+  components: {
+    VLink
+  },
   props: {
     blank: {
       type: Boolean,
