@@ -4,7 +4,7 @@
     <label class="weui-label" :style="labelStyle" v-if="label && label.length>0">{{label}}</label>
     <slot name="label"></slot>
   </div>
-  <div class="weui-cell__bd">
+  <div class="weui-cell__bd" :class="bdClass">
     <p><slot>{{title}}</slot></p>
   </div>
   <div class="weui-cell__ft">
@@ -21,6 +21,7 @@ export default {
     Node
   },
   props: {
+    bdClass: String,
     nodeType: String,
     isLink: Boolean,
     label: String,

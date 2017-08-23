@@ -29,9 +29,9 @@
     </nav>
 		<slot></slot>
   </div>
-  <footer class="spd-footer" v-show="!blank">
+  <!--footer class="spd-footer" v-show="!blank">
     <p>© Company 2017</p>
-  </footer>
+  </footer-->
 </div>
 </template>
 <script>
