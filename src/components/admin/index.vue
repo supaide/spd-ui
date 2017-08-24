@@ -1,7 +1,7 @@
 <template>
 <div class="spd" :class="!largeScreen ? 'spd-min' : null">
   <header v-show="!blank">
-    <div class="spd-logo">
+    <div class="spd-logo" @click="$emit('on-logo-click')">
       <span class="spd-logo-lg">速派得CMS</span>
       <span class="spd-logo-min">速</span>
     </div>
