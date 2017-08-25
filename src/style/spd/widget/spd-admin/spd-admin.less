@@ -3,7 +3,7 @@
 @adminSiderWidth: 150px;
 
 .spd {
-  position: relative;
+  //position: relative;
   height: 100%;
 }
 .spd > header {
@@ -44,20 +44,46 @@
 .spd-sidebar-btn:hover {
   background: #367fa9;
 }
-.spd-sidebar {
-  font-size: 14px;
-  z-index: 880;
-  min-height: 100%;
+.spd-main {
+  display: flex;
+  //position: relative;
+  //width: 100%;
+  height: 100%;
+  //padding: 50px 0 40px 0;
   padding-top: 50px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
+  transition: transform .3s ease-in-out,padding .3s ease-in-out;
+}
+.spd-empty-main {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.spd-empty-main, .spd-notransition {
+  transition: none !important;
+}
+.spd-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  //height: 100%;
+  //overflow: hidden;
+  //overflow-y: auto;
+}
+.spd-sidebar {
+  font-size: 1.1rem;
+  z-index: 880;
+  //min-height: 100%;
+  //padding-top: 50px;
+  //position: absolute;
+  //top: 0;
+  //bottom: 0;
   background-color: #222d32;
   color: #fff;
   width: @adminSiderWidth;
   transition: width .3s ease-in-out;
   > ul {
     white-space: nowrap;
+    overflow-y: auto;
+    height: 100%;
   }
   a {
     color: #8aa4af;
@@ -112,33 +138,6 @@
     }
   }
 }
-.spd-main {
-  position: relative;
-  width: 100%;
-  padding: 50px 0 40px 0;
-  transition: transform .3s ease-in-out,padding .3s ease-in-out;
-}
-.spd-empty-main {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-.spd-empty-main, .spd-notransition {
-  transition: none !important;
-  -moz-transition: none !important;
-  -webkit-transition: none !important;
-  -o-transition: color 0 ease-in !important;
-}
-.spd-footer {
-  padding: 10px 0 5px 15px;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 15px;
-  padding-left: @adminSiderWidth;
-  transition: transform .3s ease-in-out,padding .3s ease-in-out;
-}
 .spd-min {
   .spd-logo-lg, .spd-logo-min, .spd-subnavs, .spd-nav-header, .spd-nav-header__title, .spd-sidebar-arrow {
     display: none;
@@ -146,14 +145,8 @@
   .spd-logo, .spd-sidebar {
     width: 0;
   }
-  .spd-main, .spd-footer {
-    padding-left: 0;
-  }
 }
 @media (min-width: 768px) {
-  .spd-main {
-    padding: 50px 0 40px @adminSiderWidth;
-  }
   .spd-min {
     .spd-nav-header {
       display: block;
@@ -167,9 +160,6 @@
     }
     .spd-logo-min {
       display: block;
-    }
-    .spd-main, .spd-footer {
-      padding-left: 40px;
     }
     .spd-sidebar-navs:hover {
       .spd-nav-header__title {

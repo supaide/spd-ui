@@ -8,30 +8,29 @@
     <div class="spd-sidebar-btn i-align-justify" @click="sidebarToggle"></div>
     <div class="spd-header-content">content</div>
   </header>
-  <nav class="spd-sidebar" v-show="!blank">
-    <ul>
-      <li class="spd-sidebar-navs" v-for="(item, index) in menus" :key="index" @click.stop.prevent="onSel">
-        <a class="spd-nav-header">
-          <span :class="item.logo"></span>
-          <span class="spd-nav-header__title">{{item.title}}</span>
-          <span class="spd-sidebar-arrow i-chevron-down"></span>
-        </a>
-        <ul class="spd-subnavs">
-          <li v-for="(subItem, index2) in item.subs" :key="index2"><v-link :href="subItem.url">{{subItem.title}}</v-link></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-  <div class="spd-main" :class="blank ? 'spd-empty-main' : null" ref="main">
-    <nav class="spd-breadcrumb breadcrumb" v-if="breadCrumbs && breadCrumbs.length > 0">
-      <v-link class="breadcrumb-item" :href="item.url" v-for="(item, index) in breadCrumbs" :key="index" v-if="index<breadCrumbs.length-1">{{item.title}}</v-link>
-      <span class="breadcrumb-item active">{{breadCrumbs[breadCrumbs.length-1].title}}</span>
+  <div class="spd-main">
+    <nav class="spd-sidebar" v-show="!blank">
+      <ul>
+        <li class="spd-sidebar-navs" v-for="(item, index) in menus" :key="index" @click.stop.prevent="onSel">
+          <a class="spd-nav-header">
+            <span :class="item.logo"></span>
+            <span class="spd-nav-header__title">{{item.title}}</span>
+            <span class="spd-sidebar-arrow i-chevron-down"></span>
+          </a>
+          <ul class="spd-subnavs">
+            <li v-for="(subItem, index2) in item.subs" :key="index2"><v-link :href="subItem.url">{{subItem.title}}</v-link></li>
+          </ul>
+        </li>
+      </ul>
     </nav>
-		<slot></slot>
+    <div class="spd-content" :class="blank ? 'spd-empty-main' : null" ref="main">
+      <nav class="spd-breadcrumb breadcrumb" v-if="breadCrumbs && breadCrumbs.length > 0">
+        <v-link class="breadcrumb-item" :href="item.url" v-for="(item, index) in breadCrumbs" :key="index" v-if="index<breadCrumbs.length-1">{{item.title}}</v-link>
+        <span class="breadcrumb-item active">{{breadCrumbs[breadCrumbs.length-1].title}}</span>
+      </nav>
+		  <slot></slot>
+    </div>
   </div>
-  <!--footer class="spd-footer" v-show="!blank">
-    <p>© Company 2017</p>
-  </footer-->
 </div>
 </template>
 <script>
