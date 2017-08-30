@@ -6,7 +6,7 @@
       <span class="spd-logo-min">速</span>
     </div>
     <div class="spd-sidebar-btn i-align-justify" @click="sidebarToggle"></div>
-    <div class="spd-header-content">content</div>
+    <div class="spd-header-content"><span v-if="name">您好! {{name}}</span><slot name="headRight"></slot></div>
   </header>
   <div class="spd-main">
     <nav class="spd-sidebar" v-show="!blank">
@@ -45,6 +45,7 @@ export default {
       type: Boolean,
       default: true
     },
+    name: String,
     breadCrumbs: Array,
     menus: Array
   },

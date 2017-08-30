@@ -9,6 +9,7 @@
        type="text"
        class="weui-input"
        :class="inputClass"
+       :id="id"
        :placeholder="placeholder"
        :readonly="readonly"
        :disabled="disabled"
@@ -35,6 +36,7 @@ export default {
     event: 'change'
   },
   props: {
+    id: String,
     titleClass: String,
     inputClass: String,
     mvalue: null,
@@ -94,6 +96,9 @@ export default {
     clear () {
       this.value = ''
     },
+    focus () {
+      this.$refs.input.focus()
+    }
   },
   watch: {
     value (val) {
@@ -109,6 +114,6 @@ export default {
 </script>
 <style lang="less">
 @import '../../style/weui/widget/weui-cell/weui-cell_global';                  
-@import '../../style/weui/icon/weui-font.less';
-@import '../../style/weui/icon/weui-icon_font.less';
+@import '../../style/weui/icon/weui-font';
+@import '../../style/weui/icon/weui-icon_font';
 </style>

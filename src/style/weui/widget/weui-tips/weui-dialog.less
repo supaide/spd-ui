@@ -15,6 +15,7 @@
 */
 
 @import "../../base/fn";
+@import "../../base/variable/weui-dialog";
 
 .weui-dialog {
     position: fixed;
@@ -82,10 +83,10 @@
     }
 }
 .weui-dialog__btn_default {
-    color: #353535;
+    color: @weuiDialogDefaultBtnColor;
 }
 .weui-dialog__btn_primary {
-    color: #0BB20C;
+    color: @weuiDialogPrimaryBtnColor;
 }
 
 .weui-skin_android{
@@ -138,7 +139,7 @@
         }
     }
     .weui-dialog__btn_default {
-        color: #808080;
+        color: @weuiDialogDefaultBtnColor;
     }
 }
 
