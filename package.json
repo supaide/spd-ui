@@ -64,8 +64,9 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
-    "vue": "^2.4.2",
-    "spd-webutil": "^1.0.0"
+    "clone": "^2.1.1",
+    "spd-webutil": "^1.0.0",
+    "vue": "^2.4.2"
   },
   "engines": {
     "node": ">= 4.0.0",

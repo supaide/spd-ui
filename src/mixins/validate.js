@@ -1,73 +1,88 @@
 import alert from '../components/alert/alert.js'
 import {Validate} from 'spd-webutil'
+
+let validateValueKeys = ['value', 'currentValue']
+
 export default {
   props: {
     validator: String,
-    title: {
+    warnKey: {
       type: String,
-      default: ''
-    }
+      default: 'warn'
+    },
+    defaultError: {
+      type: String,
+      default: '不正确'
+    },
+    defaultValidateValueKey: String
   },
   data () {
     return {
-      warn: false,
-      currentValue: '',
-      validators: [],
-      error: ''
+      __validators: [],
+      __error: '',
+      __validateValueKey: ''
     }
   },
   created () {
-    this.currentValue = this.value
-    if (this.validator) {
-      let vs = this.validator.split(';')
-      for (let i=0; i<vs.length; i++) {
-        vs[i] = vs[i].trim()
-        if (!vs[i]) {
-          continue
-        }
-        let func, params=[], error
-        vs[i] = vs[i].split('|')
-        let tmp = vs[i][0].trim()
-        if (vs[i].length > 1) {
-          error = vs[i][1].trim()
-        }
-        let pos = tmp.indexOf('(')
-        if (pos >= 0) {
-          func = tmp.substr(0, pos).trim()
-          tmp = tmp.substr(pos+1, tmp.length-pos-2).split(',')
-          for (let j=0; j<tmp.length; j++) {
-            tmp[j] = tmp[j].trim()
-            if (tmp[j]) {
-              params.push(tmp[j])
-            }
-          }
-        } else {
-          func = tmp
-        }
-        this.validators.push([func, params, error])
+    if (!this.validator) {
+      return
+    }
+    let vs = this.validator.split(';')
+    for (let i=0; i<vs.length; i++) {
+      vs[i] = vs[i].trim()
+      if (!vs[i]) {
+        continue
       }
+      let func, params=[], error
+      vs[i] = vs[i].split('|')
+      let tmp = vs[i][0].trim()
+      if (vs[i].length > 1) {
+        error = vs[i][1].trim()
+      }
+      let pos = tmp.indexOf('(')
+      if (pos >= 0) {
+        func = tmp.substr(0, pos).trim()
+        tmp = tmp.substr(pos+1, tmp.length-pos-2).split(',')
+        for (let j=0; j<tmp.length; j++) {
+          tmp[j] = tmp[j].trim()
+          if (tmp[j]) {
+            params.push(tmp[j])
+          }
+        }
+      } else {
+        func = tmp
+      }
+      this.$data.__validators.push([func, params, error])
+    }
+    let dataKeys = Object.keys(this.$data)
+    let vvkey
+    if (this.defaultValidateValueKey) {
+      this.$data.__validateValueKey = this.defaultValidateValueKey 
+    } else {
+      for (let i=0; i<validateValueKeys.length; i++) {
+        if (dataKeys.indexOf(validateValueKeys[i]) > -1) {
+          this.$data.__validateValueKey = validateValueKeys[i]
+          break
+        }
+      }
+    }
+    if (this.$data.__validateValueKey) {
+      this.$watch(function () {
+        return this.$data[this.$data.__validateValueKey]
+      }, function (val) {
+        this.validate(true)
+      })
     }
   },
   methods: {
-    validate (ignoreEmpty) {
-      if (this.validators.length < 1) {
+    validate (ignoreEmpty, showError) {
+      if (this.$data.__validators.length < 1) {
         return true
       }
       let status = true, error
-      let value = this.currentValue
-      if (typeof value === 'object') {
-        if (typeof value.length === 'undefined') {
-          return true
-        } else {
-          if (value.length > 0) {
-            value = value[value.length-1]
-          } else {
-            value = ''
-          }
-        }
-      }
-      for (let i=0; i<this.validators.length; i++) {
-        let validate = this.validators[i]
+      let value = this.$data[this.$data.__validateValueKey]
+      for (let i=0; i<this.$data.__validators.length; i++) {
+        let validate = this.$data.__validators[i]
         if (!Validate(validate[0], value, validate[1], ignoreEmpty)) {
           status = false
           error = validate[2]
@@ -76,13 +91,21 @@ export default {
       }
       if (!status) {
         if (!error) {
-          error = this.title + '不正确'
+          let title = this.$data.title || this.$data.label || ''
+          error = title + this.defaultError
         }
-        this.error = error
-        this.warn = true
+        this.$data.__error = error
+        this.$data[this.warnKey] = true
+        if (showError) {
+          alert(error, () => {
+            if (this.focus === 'function') {
+              this.focus()
+            }
+          })
+        }
       } else {
-        this.warn = false
-        this.error = ''
+        this.$data[this.warnKey] = false
+        this.$data.__error = ''
       }
       return status
     },
@@ -92,8 +115,8 @@ export default {
         if (typeof this.$children[i].validate === 'function') {
           if(!this.$children[i].validate(false)) {
             status = false
-            if (this.$children[i].error) {
-              errors.push(this.$children[i].error)
+            if (this.$children[i].$data.__error) {
+              errors.push(this.$children[i].$data.__error)
               indexs.push(i)
             }
           }
@@ -116,6 +139,7 @@ export default {
           return s
         }
       }
+      return [true]
     }
 
   }

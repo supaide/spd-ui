@@ -28,18 +28,17 @@
 </div>
 </template>
 <script>
-import ValidateMixin from '../../mixins/validate.js'
 export default {
-  mixins: [ValidateMixin],
   model: {
-    prop: 'mvalue',
+    prop: 'currentValue',
     event: 'change'
   },
   props: {
     id: String,
+    title: String,
     titleClass: String,
     inputClass: String,
-    mvalue: null,
+    currentValue: null,
     type: {
       type: String,
       default: 'text'
@@ -75,7 +74,8 @@ export default {
   },
   data () {
     return {
-      value: this.mvalue
+      warn: false,
+      value: this.currentValue
     }
   },
   computed: {
@@ -103,9 +103,8 @@ export default {
   watch: {
     value (val) {
       this.$emit('change', val)
-      this.currentValue = val
     },
-    mvalue (val) {
+    currentValue (val) {
       this.value = val
     }
   }

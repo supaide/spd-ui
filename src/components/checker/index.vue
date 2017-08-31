@@ -8,7 +8,7 @@
 import {$} from 'spd-webutil'
 export default {
   model: {
-    prop: 'mvalue',
+    prop: 'currentValue',
     event: 'change'
   },
   props: {
@@ -17,7 +17,7 @@ export default {
       default: '10px'
     },
     space: String,
-    mvalue: null,
+    currentValue: null,
     name: String,
     disabled: Boolean,
     multi: Boolean,
@@ -36,7 +36,7 @@ export default {
       if (this.multi) {
         this.$refs.input.setAttribute('type', 'checkbox')
       }
-      this.setValue(this.mvalue)
+      this.setValue(this.currentValue)
     })
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
     },
     onClick () {
       let values = []
-      let $targets = $('input[name='+this.name+']')
+      let $targets = $('input[name='+this.name0+']')
       $targets.forEach((target) => {
         if (target.checked) {
           values.push(this.typeValue(target.value))
@@ -72,7 +72,7 @@ export default {
     }
   },
   watch: {
-    mvalue (val) {
+    currentValue (val) {
       this.setValue(val)
     } 
   }
