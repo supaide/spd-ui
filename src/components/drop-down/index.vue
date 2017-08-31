@@ -33,7 +33,8 @@ export default {
     return {
       items: this.value,
       show: false,
-      label: this.defaultLabel
+      label: this.defaultLabel,
+      currentValue: this.value
     }
   },
   mounted () {
@@ -58,7 +59,6 @@ export default {
     },
     del (i, e) {
       this.items.splice(i, 1)
-      console.log(this.items)
       this.$emit('input', this.items)
     }
   },
@@ -67,6 +67,7 @@ export default {
     },
     value (val) {
       this.items = val
+      this.currentValue = val
     },
     defaultLabel (val) {
       this.label = val

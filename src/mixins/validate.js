@@ -100,6 +100,9 @@ export default {
           alert(error, () => {
             if (this.focus === 'function') {
               this.focus()
+            } else {
+              let rect = this.$parent.$el.getBoundingClientRect()
+              document.querySelector('.page-view').scrollTop = rect.top + document.querySelector('.page-view').scrollTop - 50
             }
           })
         }
@@ -127,6 +130,9 @@ export default {
         alert(errors[0], function () {
           if (typeof target.focus === 'function') {
             target.focus()
+          } else {
+            let rect = this.$parent.$el.getBoundingClientRect()
+            document.querySelector('.page-view').scrollTop = rect.top + document.querySelector('.page-view').scrollTop - 50
           }
         })
       }
@@ -140,6 +146,19 @@ export default {
         }
       }
       return [true]
+    },
+    validateRefs (showError) {
+      let ok = true, status={}
+      let refKeys = Object.keys(this.$refs)
+      for (let i=0; i<refKeys.length; i++) {
+        if (this.$refs[refKeys[i]].validate) {
+          if (!this.$refs[refKeys[i]].validate(false, showError)) {
+            ok = false
+            status[refKeys[i]] = false
+          }
+        }
+      }
+      return [ok, status]
     }
 
   }
