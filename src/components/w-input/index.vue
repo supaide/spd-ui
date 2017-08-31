@@ -22,7 +22,6 @@
   </div>
   <div class="weui-cell__ft">
     <i class="weui-icon-clear" @click="clear" v-show="!readonly && !disabled && value && showClear"></i>
-    <i class="weui-icon-warn" v-show="warn && showWarn"></i>
     <slot name="right" class="spd-right"></slot>
   </div>
 </div>
@@ -48,10 +47,6 @@ export default {
     titleAlign: String,
     titleMarginRight: String,
     showClear: Boolean,
-    showWarn: {
-      type: Boolean,
-      default: true
-    },
     readonly: Boolean,
     disabled: Boolean,
     autocomplete: {
