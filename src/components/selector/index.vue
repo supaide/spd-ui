@@ -76,7 +76,8 @@ export default {
         return
       }
       let value = this.currentValue
-      if (Object.prototype.toString.call(value) !== '[object Array]') {
+      if (!Array.isArray(value)) {
+      //if (Object.prototype.toString.call(value) !== '[object Array]') {
         value = [value]
       }
       let texts = []
