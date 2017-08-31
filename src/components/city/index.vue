@@ -67,7 +67,6 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this.$refs.container.setAttribute('id', 'city-'+this._uid)
-      let pos = this.$el.getBoundingClientRect()
       this.$refs.container.style.top = this.$el.offsetHeight + 'px'
     })
     for (let i=0; i<this.headers.length; i++) {
@@ -101,7 +100,7 @@ export default {
      */
     selCity(adcode, level, index) {
       level = level - 0
-      let $lis = document.querySelectorAll('.spd-city-body li')
+      let $lis = this.$el.querySelectorAll('.spd-city-body li')
       let adcodes = {}
       for (let i=0; i<$lis.length; i++) {
         if ($lis[i].classList.contains('selected')) {
@@ -162,10 +161,23 @@ export default {
       this.show = false
     },
     render (level, reset) {
-      if (window.innerWidth <= 768) {
-        let container = this.$refs.container
-        container.style.left = this.leftOffset ? (0-this.leftOffset)+'px' : '-100px'
+      let container = this.$refs.container
+      let winWidth = window.innerWidth
+      let rect = this.$el.getBoundingClientRect()
+      let left = null
+      if (winWidth <= 768 && winWidth > 600) {
+        left = this.leftOffset ? (0-this.leftOffset)+'px' : '-100px'
+      } else if (winWidth <= 600) {
+        if (rect.left > 200) {
+          left = '-150px'
+        } else {
+          left = (20-rect.left) + 'px'
+        }
       }
+      if (left) {
+        container.style.left = left
+      }
+
       level = level - 0
       if (this.currentIndexs[level-2] && this.currentIndexs[level-2].length>1) {
         return
@@ -186,7 +198,7 @@ export default {
       this.confirm0 = this.multi && this.multiLevel0 <= this.currentLevel && this.currentIndexs[this.currentLevel-1].length>0
       this.displayItems = childs
       this.$nextTick(()=>{
-        let $lis = document.querySelectorAll('.spd-city-body li')
+        let $lis = this.$el.querySelectorAll('.spd-city-body li')
         for(let i=0; i<$lis.length; i++) {
           let adcode = $lis[i].getAttribute('data-adcode')
           if (this.currentValues[level-1].length > 0 && this.currentValues[level-1].indexOf(adcode) > -1) {
@@ -467,6 +479,12 @@ export default {
 @media (max-width: 768px) {
   .spd-city-body ul {
     width: 303px;
+    min-width: 100px;
+  }
+}
+@media (max-width: 450px) {
+  .spd-city-body ul {
+    width: 202px;
     min-width: 100px;
   }
 }
