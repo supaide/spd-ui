@@ -1,7 +1,7 @@
 import alert from '../components/alert/alert.js'
 import {Validate} from 'spd-webutil'
 
-let validateValueKeys = ['value', 'currentValue']
+let validateKeys = ['value', 'currentValue']
 
 export default {
   props: {
@@ -14,13 +14,13 @@ export default {
       type: String,
       default: '不正确'
     },
-    defaultValidateValueKey: String
+    validateKey: String
   },
   data () {
     return {
       __validators: [],
       __error: '',
-      __validateValueKey: ''
+      __validateKey: ''
     }
   },
   created () {
@@ -55,20 +55,23 @@ export default {
       this.$data.__validators.push([func, params, error])
     }
     let dataKeys = Object.keys(this.$data)
-    let vvkey
-    if (this.defaultValidateValueKey) {
-      this.$data.__validateValueKey = this.defaultValidateValueKey 
+    if (this.validateKey) {
+      this.$data.__validateKey = this.validateKey
     } else {
-      for (let i=0; i<validateValueKeys.length; i++) {
-        if (dataKeys.indexOf(validateValueKeys[i]) > -1) {
-          this.$data.__validateValueKey = validateValueKeys[i]
+      for (let i=0; i<validateKeys.length; i++) {
+        if (dataKeys.indexOf(validateKeys[i]) > -1) {
+          this.$data.__validateKey = validateKeys[i]
           break
         }
       }
     }
-    if (this.$data.__validateValueKey) {
+    if (this.$data.__validateKey) {
       this.$watch(function () {
-        return this.$data[this.$data.__validateValueKey]
+        if(dataKeys.indexOf(this.$data.__validateKey) > -1) {
+          return this.$data[this.$data.__validateKey]
+        } else {
+          return this.$props[this.$data.__validateKey]
+        }
       }, function (val) {
         this.validate(true)
       })
@@ -80,7 +83,13 @@ export default {
         return true
       }
       let status = true, error
-      let value = this.$data[this.$data.__validateValueKey]
+      let value
+      let dataKeys = Object.keys(this.$data)
+      if (dataKeys.indexOf(this.$data.__validateKey) > -1) {
+        value = this.$data[this.$data.__validateKey]
+      } else {
+        value = this.$props[this.$data.__validateKey]
+      }
       for (let i=0; i<this.$data.__validators.length; i++) {
         let validate = this.$data.__validators[i]
         if (!Validate(validate[0], value, validate[1], ignoreEmpty)) {

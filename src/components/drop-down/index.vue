@@ -2,20 +2,31 @@
 <div class="dropdown" v-click-outside="onClickedOutside">
   <a class="dropdown-label" @click="toggle">{{label}}</a>
   <div class="dropdown-items" v-show="show">
-    <a v-for="(item, index) in items" :key="item.value" class="dropdown-item" @click.stop.prevent="sel(index, item.label, $event)">{{item.label}}<span v-if="itemDel" class="del" @click.stop.prevent="del(index, $event)">+</span></a>
+    <a v-for="(item, index) in items" :key="item.value" class="dropdown-item" @click.stop.prevent="sel(index, $event)">{{item.label}}<span v-if="itemDel" class="del" @click.stop.prevent="del(index, $event)">+</span></a>
   </div>
 </div>
 </template>
 <script>
 import ClickOutside from '../../directives/click-outside'
+import {$} from 'spd-webutil'
 export default {
   directives: {
     ClickOutside
   },
   props: {
-    value: Array,
+    etc: {
+      type: String,
+      default: '...'
+    },
+    items: Array,
+    value: [Array, String, Number, Boolean],
+    multi: Boolean,
     maxHeight: Number,
     itemClickHide: {
+      type: Boolean,
+      default: true
+    },
+    clickable: {
       type: Boolean,
       default: true
     },
@@ -27,14 +38,15 @@ export default {
     defaultLabel: {
       type: String,
       default: '请选择'
-    }
+    },
+    loader: Function
   },
   data () {
     return {
-      items: this.value,
       show: false,
+      firstSelectedInd: -1,
+      top: 'auto',
       label: this.defaultLabel,
-      currentValue: this.value
     }
   },
   mounted () {
@@ -43,31 +55,133 @@ export default {
     if (this.maxHeight) {
       itemsDom.style.maxHeight = this.maxHeight + 'px'
     }
+    if (!this.multi) {
+      $(this.$el).on('mouseover', '.dropdown-item', this.mouseOverHandler)
+    }
+  },
+  destroy () {
+    if (!this.multi) {
+      $(this.$el).off('mouseover', '.dropdown-item', this.mouseOverHandler)
+    }
   },
   methods: {
+    mouseOverHandler (evt) {
+      let $items = this.$el.querySelectorAll('.dropdown-item')
+      for (let i=0; i<$items.length; i++) {
+        $items[i].classList.remove('active')
+      }
+      evt.target.classList.add('active')
+    },
+    toggle () {
+      if (!this.show) {
+        if (!this.items || this.items.length<1) {
+          if (this.loader) {
+            this.loader(() => {
+              this.show = true
+            })
+            return
+          }
+        }
+      }
+      this.show = !this.show
+    },
     onClickedOutside () {
       this.show = false
     },
-    toggle () {
-      this.show = !this.show
-    },
-    sel (i, label, e) {
-      if (this.itemClickHide) {
-        this.show = false
+    setValue (values) {
+      if (!this.clickable) {
+        return
       }
-      this.label = label
+      if (!values || values.length<1) {
+        return
+      }
+      values = [].concat(values)
+      let $items = this.$el.querySelectorAll('.dropdown-item')
+      for (let i=0; i<$items.length; i++) {
+        if (values.indexOf(this.items[i].value) > -1) {
+          $items[i].classList.add('active')
+          $items[i].classList.add('selected')
+        } else {
+          $items[i].classList.remove('active')
+          $items[i].classList.remove('selected')
+        }
+      }
+      this.updateValue()
+    },
+    updateValue (hide) {
+      this.$nextTick(() => {
+        let $items = this.$el.querySelectorAll('.dropdown-item')
+        let values = [], firstSelectedInd = -1
+        for (let i=0; i<$items.length; i++) {
+          if ($items[i].classList.contains('selected')) {
+            if (firstSelectedInd < 0) {
+              firstSelectedInd = i 
+            }
+            values.push(this.items[i].value)
+          }
+        }
+        this.firstSelectedInd = firstSelectedInd
+        if (firstSelectedInd > -1) {
+          this.top = (0 - $items[this.firstSelectedInd].offsetTop + 5) + 'px'
+          this.changeLabel ? (this.label = this.items[firstSelectedInd].label + (values.length>1 ? this.etc : '')) : ''
+        } else {
+          this.top = 'auto'
+          this.changeLabel ? (this.label = this.defaultLabel) : ''
+        }
+        if (!this.multi) {
+          values = values.pop()
+        }
+        if (hide) {
+          this.show = false
+        }
+        this.$emit('input', values)
+      })
+    },
+    sel (ind, e) {
+      if (!this.clickable) {
+        return
+      }
+      let $items = this.$el.querySelectorAll('.dropdown-item')
+      for (let i=0; i<$items.length; i++) {
+        if ((this.multi && i==ind && $items[i].classList.contains('selected')) || (!this.multi && i!=ind)) {
+          $items[i].classList.remove('active')
+          $items[i].classList.remove('selected')
+          continue
+        }
+        if (i == ind) {
+          $items[i].classList.add('active')
+          $items[i].classList.add('selected')
+        }
+      }
+      this.updateValue(!this.multi && this.itemClickHide)
     },
     del (i, e) {
-      this.items.splice(i, 1)
-      this.$emit('input', this.items)
+      let items = this.items
+      items.splice(i, 1)
+      this.$emit('update:items', items)
+      this.updateValue()
     }
   },
   watch: {
     show (val) {
-    },
-    value (val) {
-      this.items = val
-      this.currentValue = val
+      if (val) {
+        let container = this.$el.querySelector('.dropdown-items')
+        container.style.top = this.top
+        if (!this.value || this.value.length<1) {
+          return
+        }
+        let $items = this.$el.querySelectorAll('.dropdown-item')
+        let values = [].concat(this.value)
+        for (let i=0; i<$items.length; i++) {
+          if (values.indexOf(this.items[i].value) > -1) {
+            $items[i].classList.add('active')
+            $items[i].classList.add('selected')
+          } else {
+            $items[i].classList.remove('active')
+            $items[i].classList.remove('selected')
+          }
+        }
+      }
     },
     defaultLabel (val) {
       this.label = val
@@ -76,76 +190,5 @@ export default {
 }
 </script>
 <style lang="less">
-.dropdown {
-  position: relative;
-  display: inline-block;
-  color: #495057;
-  font-size: 12px;
-}
-.dropdown-label {
-  cursor: pointer;
-  display: inline-block;
-  border: 1px solid rgba(0,0,0,.15);
-  padding: .25rem .5rem;
-  border-radius: .2rem;
-  &:after {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: .255em;
-    vertical-align: .255em;
-    content: "";
-    border-top: .3em solid;
-    border-right: .3em solid transparent;
-    border-left: .3em solid transparent;
-  }
-}
-.dropdown-items {
-  position: absolute;
-  padding: 5px 5px 5px 0;
-  transform: translate3d(0px, -2px, 0px);
-  will-change: transform;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: .25rem;
-  min-height: 50px;
-  overflow-y: auto;
-  z-index: 100;
-  .dropdown-item {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding: .25rem 2.5rem .25rem 1.5rem;
-    clear: both;
-    font-weight: 400;
-    color: #212529;
-    text-align: inherit;
-    white-space: nowrap;
-    background: 0 0;
-    border: 0;
-    &:active, &.active {
-      color: #fff;
-      text-decoration: none;
-      background-color: #007bff;
-    }
-    &:focus, &:hover {
-      color: #16181b;
-      text-decoration: none;
-      background-color: #f8f9fa;
-    }
-    .del {
-      cursor: pointer;
-      display: inline-block;
-      position: absolute;
-      right: 0;
-      width: 20px;
-      text-align: center;
-      font-size: 15px;
-      transform: rotate(45deg);
-      top: 0px;
-      
-    }
-  }
-}
+@import '../../style/spd/widget/drop-down/drop-down.less';
 </style>
