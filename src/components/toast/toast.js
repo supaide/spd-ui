@@ -14,8 +14,19 @@
 * limitations under the License.
 */
 
-import $ from '../util/util';
-import tpl from './toast.html';
+import {$} from 'spd-webutil';
+
+const tpl = `
+<div class="<%= className %>">
+  <div class="weui-mask_transparent"></div>
+  <div class="weui-toast">
+    <% if (showIcon) { %>
+    <i class="weui-icon_toast weui-icon-success-no-circle"></i>
+    <% } %>
+    <p class="weui-toast__content" style="<%= contentMargin %>"><%=content%></p>
+  </div>
+</div>
+`
 
 let _sington;
 
@@ -53,6 +64,8 @@ function toast(content = '', options = {}) {
         content: content,
         duration: 3000,
         callback: $.noop,
+        showIcon: false,
+        contentMargin: 'margin: 15px 0;',
         className: ''
     }, options);
 
@@ -71,7 +84,11 @@ function toast(content = '', options = {}) {
             .on('animationend webkitAnimationEnd', function () {
                 $toastWrap.remove();
                 _sington = false;
-                options.callback();
+                try {
+                  options.callback();
+                } catch(e) {
+                  console.log(e)
+                }
             });
     }, options.duration);
 

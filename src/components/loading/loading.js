@@ -67,7 +67,11 @@ function loading(content = '', options = {}) {
             .on('animationend webkitAnimationEnd', function () {
                 $loadingWrap.remove();
                 _sington = false;
-                callback && callback();
+                try {
+                  callback && callback();
+                } catch(e) {
+                  console.log(e)
+                }
             });
     }
     function hide(callback){ _hide(callback); }

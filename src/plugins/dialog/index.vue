@@ -1,11 +1,15 @@
 <script>
 import dialog0 from '../../components/dialog/dialog.js'
 import alert0 from '../../components/alert/alert.js'
+import toast0 from '../../components/toast/toast.js'
 import confirm0 from '../../components/confirm/confirm.js'
 import loading0 from '../../components/loading/loading.js'
 
 export default {
   methods: {
+    toast () {
+      return toast0.apply(this, arguments)
+    },
     alert () {
       return alert0.apply(this, arguments)
     },

@@ -96,7 +96,11 @@ function dialog(options = {}) {
             .on('animationend webkitAnimationEnd', function () {
                 $dialogWrap.remove();
                 _sington = false;
-                callback && callback();
+                try {
+                  callback && callback();
+                } catch(e) {
+                  console.log(e)
+                }
             });
     }
     function hide(callback){ _hide(callback); }

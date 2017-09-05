@@ -20,6 +20,8 @@ import Group from './components/group/index.vue'
 import Node from './components/node/index.vue'
 import Picker from './components/picker/index.vue'
 import Popup from './components/popup/index.vue'
+import Qiniu from './components/qiniu/index.vue'
+import QiniuConfig from './components/qiniu/config.js'
 import Scroll from './components/scroll/index.vue'
 import Selector from './components/selector/index.vue'
 import SearchBar from './components/searchbar/index.vue'
@@ -57,6 +59,8 @@ export {
   Node,
   Popup,
   Picker,
+  Qiniu,
+  QiniuConfig,
   Scroll,
   SearchBar,
   Selector,
