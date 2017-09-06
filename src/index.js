@@ -17,6 +17,7 @@ import DropDown from './components/drop-down/index.vue'
 import {Flex, FlexItem} from './components/flex'
 import {Grid, GridItem} from './components/grid'
 import Group from './components/group/index.vue'
+import Navbar from './components/navbar/index.vue'
 import Node from './components/node/index.vue'
 import Picker from './components/picker/index.vue'
 import Popup from './components/popup/index.vue'
@@ -56,6 +57,7 @@ export {
   Grid,
   GridItem,
   Group,
+  Navbar,
   Node,
   Popup,
   Picker,
