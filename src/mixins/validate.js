@@ -39,6 +39,9 @@ export default {
       if (vs[i].length > 1) {
         error = vs[i][1].trim()
       }
+      if (!error && (this.title || this.label || this.placeholder)) {
+        error = (this.title || this.label || this.placeholder) + '有误'
+      }
       let pos = tmp.indexOf('(')
       if (pos >= 0) {
         func = tmp.substr(0, pos).trim()
@@ -55,6 +58,7 @@ export default {
       this.$data.__validators.push([func, params, error])
     }
     let dataKeys = Object.keys(this.$data)
+    dataKeys = dataKeys.concat(Object.keys(this.$props))
     if (this.validateKey) {
       this.$data.__validateKey = this.validateKey
     } else {

@@ -51,7 +51,7 @@ export default {
     disabled: Boolean,
     autocomplete: {
       type: String,
-      default: 'off'
+      default: 'on'
     },
     autocapitalize: {
       type: String,
