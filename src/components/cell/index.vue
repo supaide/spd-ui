@@ -1,5 +1,5 @@
 <template>
-<node :type="nodeType0" class="weui-cell" :class="{'weui-cell_access': isLink}" :href="href" @click.native="onClick">
+<node :type="nodeType0" class="weui-cell" :class="{'weui-cell_access': isLink, 'weui-cell_noborder': noborder0}" :href="href" @click.native="onClick">
   <div class="weui-cell__hd" v-if="showhd">
     <label class="weui-label" :style="labelStyle" v-if="label && label.length>0">{{label}}</label>
     <slot name="label"></slot>
@@ -21,6 +21,7 @@ export default {
     Node
   },
   props: {
+    noborder: Boolean,
     bdClass: String,
     nodeType: String,
     isLink: Boolean,
@@ -34,6 +35,7 @@ export default {
   },
   data () {
     return {
+      noborder0: this.noborder || this.$parent.noborder,
       nodeType0: 'a',
       href: null,
       showhd: true
@@ -72,4 +74,9 @@ export default {
 @import '../../style/weui/widget/weui-cell/weui-cell_global';                  
 @import '../../style/weui/widget/weui-loading/weui-loading.less'; 
 @import '../../style/weui/widget/weui-cell/weui-form/weui-form_common.less';
+.weui-cell_noborder {
+  &:before, &:after {
+    border: none !important;
+  }
+}
 </style>

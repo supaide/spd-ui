@@ -1,5 +1,5 @@
 <template>
-<div class="weui-cell" :class="warn ? 'weui-cell_warn' : null">
+<div class="weui-cell" :class="[warn ? 'weui-cell_warn' : null, noborder0 ? 'weui-cell_noborder' : null]">
   <div class="weui-cell__hd"> 
     <label class="weui-label" :style="titleStyle" :class="titleClass" v-if="title && title.length>0">{{title}}</label>
     <slot name="title"></slot>
@@ -33,6 +33,7 @@ export default {
     event: 'change'
   },
   props: {
+    noborder: Boolean,
     id: String,
     title: String,
     titleClass: String,
@@ -69,6 +70,7 @@ export default {
   },
   data () {
     return {
+      noborder0: this.noborder || this.$parent.noborder,
       warn: false,
       value: this.currentValue
     }

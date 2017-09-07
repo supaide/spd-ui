@@ -56,10 +56,10 @@ export default {
   display: flex;
   padding: 5px;
   flex-direction: column;
-  ul {
+  > ul {
     border-bottom: 1px solid #ccc;
   }
-  li {
+  > ul li {
     margin-bottom: -1px;
     float: left;
     min-width: 100px;
@@ -75,7 +75,7 @@ export default {
     border-top: 1px solid transparent;
     border-right: 1px solid transparent;
   }
-  li.active {
+  > ul li.active {
     color: #000;
     border-bottom: 1px solid #fff;
     border-left: 1px solid #ccc;
