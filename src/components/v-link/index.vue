@@ -2,17 +2,24 @@
 <a @click="onClick"><slot></slot></a>
 </template>
 <script>
+let jsHref = 'javascript:void(0)'
 import {url, event} from 'spd-webutil'
 export default {
   mounted () {
-    let href = this.$el.getAttribute('href')
-    if (!href) {
-      return
-    }
-    this.$el.setAttribute('href', 'javascript:void(0)')
-    this.$el.setAttribute('data-href', href)
+    this.updateHref()
+  },
+  updated () {
+    this.updateHref()
   },
   methods: {
+    updateHref () {
+      let href = this.$el.getAttribute('href')
+      if (!href || href == jsHref) {
+        return
+      }
+      this.$el.setAttribute('href', jsHref)
+      this.$el.setAttribute('data-href', href)
+    },
     onClick () {
       let href = this.$el.getAttribute('data-href')
       let urlInfo = url.decodeQuery(href)

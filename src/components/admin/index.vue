@@ -19,7 +19,7 @@
             <span class="spd-sidebar-arrow i-chevron-down"></span>
           </a>
           <ul class="spd-subnavs">
-            <li v-for="(subItem, index2) in item.subs" :key="index2"><v-link :href="subItem.url">{{subItem.title}}</v-link></li>
+            <li v-for="(subItem, index2) in item.subs" :key="subItem.url"><v-link :href="subItem.url">{{subItem.title}}</v-link></li>
           </ul>
         </li>
       </ul>
