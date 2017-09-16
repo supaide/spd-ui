@@ -1,10 +1,10 @@
 <script>
 export default {
   render: function(h) {
-    return h(this.type, this.$slots.default)
+    return h(this.node, this.$slots.default)
   },
   props: {
-    type: {
+    node: {
       type: String,
       required: true
     }

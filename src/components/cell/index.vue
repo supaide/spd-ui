@@ -1,5 +1,5 @@
 <template>
-<node :type="nodeType0" class="weui-cell" :class="{'weui-cell_access': isLink, 'weui-cell_noborder': noborder0}" :href="href" @click.native="onClick">
+<node :node="nodeType0" class="weui-cell" :class="{'weui-cell_access': isLink, 'weui-cell_noborder': noborder0}" :href="href" @click.native="onClick">
   <div class="weui-cell__hd" v-if="showhd">
     <label class="weui-label" :style="labelStyle" v-if="label && label.length>0">{{label}}</label>
     <slot name="label"></slot>

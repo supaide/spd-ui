@@ -1,5 +1,5 @@
 <template>
-  <node :type="nodeType" @click.native="clickHandler"><slot></slot></node>
+  <node :node="nodeType" @click.native="clickHandler"><slot></slot></node>
 </template>
 <script>
 import {picker, datePicker} from './picker'

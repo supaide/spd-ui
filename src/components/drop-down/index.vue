@@ -122,10 +122,10 @@ export default {
         }
         this.firstSelectedInd = firstSelectedInd
         if (firstSelectedInd > -1) {
-          this.top = (0 - $items[this.firstSelectedInd].offsetTop + 5) + 'px'
+          //this.top = (0 - $items[this.firstSelectedInd].offsetTop + 5) + 'px'
           this.changeLabel ? (this.label = this.items[firstSelectedInd].label + (values.length>1 ? this.etc : '')) : ''
         } else {
-          this.top = 'auto'
+          //this.top = 'auto'
           this.changeLabel ? (this.label = this.defaultLabel) : ''
         }
         if (!this.multi) {
@@ -190,5 +190,5 @@ export default {
 }
 </script>
 <style lang="less">
-@import '../../style/spd/widget/drop-down/drop-down.less';
+//@import '../../style/spd/widget/drop-down/drop-down.less';
 </style>
