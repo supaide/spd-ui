@@ -30,6 +30,10 @@
       <div class="col-12 col-md-2 spd-sidebar" v-show="!blank">
         <form class="spd-sidebar-search d-flex align-items-center">
           <input type="search" class="form-control form-control-sm" placeholder="查：ID / 手机号" autocomplete="off" spellcheck="false" dir="auto" style="position: relative; vertical-align: top;">
+          <button class="btn-link spd-nav-toggle d-md-none p-0 ml-3" type="button" data-toggle="collapse" data-target="#spd-nav">
+            <svg class="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"></path></svg>
+
+          </button>
         </form>
 
         <nav class="spd-sidebar-links collapse" id="spd-nav">
@@ -50,7 +54,7 @@
 
         </nav>
       </div>
-      <main class="col-12 py-md-3 pl-md-3 spd-content" :class="[blank ? 'col-sm-12' : 'col-md-9 col-xl-8']">
+      <main class="col-12 py-sm-3 pl-md-3 spd-content" :class="[blank ? 'col-sm-12' : 'col-md-9 col-xl-8']">
         <nav class="spd-breadcrumb breadcrumb" v-if="breadCrumbs && breadCrumbs.length > 0">
           <v-link class="breadcrumb-item" :href="item.url" v-for="(item, index) in breadCrumbs" :key="index" v-if="index<breadCrumbs.length-1">{{item.title}}</v-link>
           <span class="breadcrumb-item active">{{breadCrumbs[breadCrumbs.length-1].title}}</span>
@@ -116,6 +120,7 @@ export default {
 }
 
 .spd-header {
+  font-size: 1.15rem;
   min-height: 4rem;
   background-color: #563d7c;
   box-shadow: 0 0.5rem 1rem rgba(0,0,0,.05), inset 0 -1px 0 rgba(0,0,0,.1);
@@ -233,5 +238,9 @@ export default {
 }
 .spd-sidebar-menu:last-child {
   padding-bottom: 30px;
+}
+.spd-nav-toggle {
+  line-height: 1;
+  color: #212529;
 }
 </style>

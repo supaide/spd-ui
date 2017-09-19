@@ -27,15 +27,14 @@ export default {
   methods: {
     clickHandler () {
       let menus = []
-      this.menus.forEach((menu, i) => {
+      this.menus.forEach((menu) => {
         menus.push({label: menu, onClick: (result, evt) => {
           this.$emit('on-menu', result, evt)
         }})
       })
-
       let actions = []
       if (this.actions) {
-        this.actions.forEach((action, i) => {
+        this.actions.forEach((action) => {
           actions.push({label: action, onClick: (result, evt) => {
             this.$emit('on-action', result, evt)
           }})

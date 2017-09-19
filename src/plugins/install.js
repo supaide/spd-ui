@@ -6,6 +6,7 @@ let init = function (Vue, target, component) {
   let c = Vue.extend(component)
   let vm = new c()
   vm.$destroy()
+
   Object.keys(component.methods).forEach(function (method) {
     target[method] = component.methods[method]
   })
