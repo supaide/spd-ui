@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import {$, util} from 'spd-webutil'
+import {$} from 'spd-webutil'
 
 let popupCache = {}
 export default {
@@ -34,7 +34,8 @@ export default {
   methods: {
     resetMask () {
       let isShow = false
-      util.each(popupCache, (uid, vm) => {
+      Object.keys(popupCache).forEach((uid) => {
+        let vm = popupCache[uid]
         if (vm.show && uid != this._uid) {
           isShow = true
           return false
@@ -65,7 +66,8 @@ export default {
       this.$refs.popup.classList.remove('weui-animate-fade-in') 
     },
     onMaskClick () {
-      util.each(popupCache, (uid, vm) => {
+      Object.keys(popupCache).forEach((uid) => {
+        let vm = popupCache[uid]
         vm.onHide.apply(vm)
       })
     },

@@ -19,7 +19,7 @@
 </div>
 </template>
 <script>
-import clone from 'clone'
+import {util} from 'spd-webutil'
 import ClickOutside from '../../directives/click-outside'
 export default {
   directives: {
@@ -155,9 +155,9 @@ export default {
       this.text = this.getText()
     },
     onConfirm () {
-      this.preValues = clone(this.currentValues)
-      this.preIndexs = clone(this.currentIndexs)
-      this.preLevel = clone(this.currentLevel)
+      this.preValues = util.clone(this.currentValues)
+      this.preIndexs = util.clone(this.currentIndexs)
+      this.preLevel = util.clone(this.currentLevel)
       this.show = false
     },
     render (level, reset) {
@@ -190,9 +190,9 @@ export default {
         childs = childs[this.currentIndexs[i][0]].childs
       }
       if (reset) {
-        this.preValues = clone(this.currentValues)
-        this.preIndexs = clone(this.currentIndexs)
-        this.preLevel = clone(this.currentLevel)
+        this.preValues = util.clone(this.currentValues)
+        this.preIndexs = util.clone(this.currentIndexs)
+        this.preLevel = util.clone(this.currentLevel)
       }
       this.currentLevel = level
       this.confirm0 = this.multi && this.multiLevel0 <= this.currentLevel && this.currentIndexs[this.currentLevel-1].length>0
@@ -283,8 +283,8 @@ export default {
           this.currentIndexs.push([])
           this.currentValues.push([])
         }
-        this.preValues = clone(this.currentValues)
-        this.preIndexs = clone(this.currentIndexs)
+        this.preValues = util.clone(this.currentValues)
+        this.preIndexs = util.clone(this.currentIndexs)
         if (!notEmit) {
           this.$emit('input', this.currentValue)
         }
@@ -317,8 +317,8 @@ export default {
       }
       this.currentValues.push(values1)
       this.currentIndexs.push(indexs1)
-      this.preValues = clone(this.currentValues)
-      this.preIndexs = clone(this.currentIndexs)
+      this.preValues = util.clone(this.currentValues)
+      this.preIndexs = util.clone(this.currentIndexs)
       this.text = this.getText()
     },
     getText (notJoin) {
@@ -353,9 +353,9 @@ export default {
       }
     },
     hide () {
-      this.currentValues = clone(this.preValues)
-      this.currentIndexs = clone(this.preIndexs)
-      this.currentLevel = clone(this.preLevel)
+      this.currentValues = util.clone(this.preValues)
+      this.currentIndexs = util.clone(this.preIndexs)
+      this.currentLevel = util.clone(this.preLevel)
       this.text = this.getText()
       let values = this.currentValues[this.currentLevel-1]
       this.currentValue = [].concat(values)

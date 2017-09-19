@@ -13,7 +13,6 @@
 <script>
 import Cell from '../cell/index.vue'
 import Group from '../group/index.vue'
-import {util} from 'spd-webutil'
 export default {
   props: {
     title: String,
@@ -36,7 +35,7 @@ export default {
   mounted () {
     this.$nextTick(function () {
       if (this.checkbox) {
-        util.each(this.$refs.input, (i, input) => {
+        this.$refs.input.forEach((input) => {
           input.setAttribute('type', 'checkbox')
         })
       }

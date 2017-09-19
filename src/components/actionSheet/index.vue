@@ -4,7 +4,6 @@
 <script>
 import ActionSheet from './actionSheet'
 import Node from '../node/index.vue'
-import {util} from 'spd-webutil'
 
 export default {
   props: {
@@ -28,17 +27,20 @@ export default {
   methods: {
     clickHandler () {
       let menus = []
-      util.each(this.menus, (i, menu) => {
+      this.menus.forEach((menu, i) => {
         menus.push({label: menu, onClick: (result, evt) => {
           this.$emit('on-menu', result, evt)
         }})
       })
+
       let actions = []
-      util.each(this.actions, (i, action) => {
-        actions.push({label: action, onClick: (result, evt) => {
-          this.$emit('on-action', result, evt)
-        }})
-      })
+      if (this.actions) {
+        this.actions.forEach((action, i) => {
+          actions.push({label: action, onClick: (result, evt) => {
+            this.$emit('on-action', result, evt)
+          }})
+        })
+      }
       ActionSheet(menus, actions, {className: this.className})
     }
   }

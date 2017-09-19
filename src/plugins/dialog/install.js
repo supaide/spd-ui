@@ -1,4 +1,3 @@
-import {util} from 'spd-webutil'
 import dialog from './index.vue'
 
 let installed = false
@@ -9,7 +8,7 @@ export default {
     }
     installed = true
     target = target || window
-    util.each(dialog.methods, function (method) {
+    Object.keys(dialog.methods).forEach(function (method) {
       target[method] = dialog.methods[method]
     })
     // 为了加载样式文件，先实例化dialog，再destroy

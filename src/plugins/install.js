@@ -1,4 +1,4 @@
-import {$, util} from 'spd-webutil'
+import {$} from 'spd-webutil'
 import dialog from './dialog/index.vue'
 import picker from './picker/index.vue'
 
@@ -6,8 +6,7 @@ let init = function (Vue, target, component) {
   let c = Vue.extend(component)
   let vm = new c()
   vm.$destroy()
-
-  util.each(component.methods, function (method) {
+  Object.keys(component.methods).forEach(function (method) {
     target[method] = component.methods[method]
   })
 }
