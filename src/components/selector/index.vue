@@ -10,7 +10,6 @@
 </span>
 </template>
 <script>
-import {$} from 'spd-webutil'
 import Popup from '../popup/index.vue'
 import Checker from '../checker/index.vue'
 import TransferDom from '../../directives/transfer-dom/index.js'
