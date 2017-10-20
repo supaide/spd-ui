@@ -1,26 +1,26 @@
 <template>
-<div>
-  <label :for="id0" class="col-form-label" :class="clabelClass">{{label}}</label>
-  <div v-if="wrapInput" :class="wrapClass">
-    <div class="input-group" :class="[inputClass, size0 ? 'input-group-'+size0 : null]" v-if="withAddon">
-      <span v-if="laddons.length>0" class="input-group-addon" v-for="addon in laddons">{{addon}}</span>
-      <slot name="laddon"></slot>
-      <input v-model="value" :class="[{'is-invalid' : invalid}, plainText ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" :readonly="readOnly || plainText" :disabled="disabled">
-      <span class="input-group-addon" v-if="raddon">{{raddon}}</span>
-      <slot name="raddon"></slot>
+<div class="form-group" :class="className">
+  <template v-if="layout0 == 'v1' || layout0 == 'l1'">
+  <!-- 垂直且label独占一行 -->
+    <label for="exampleInputEmail1">{{label}}</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" :placeholder="placeholder">
+    <small id="emailHelp" class="form-text text-muted">{{tips}}</small>
+  </template>
+
+  <!-- 垂直且label同行 父节点要加row样式名，实现flex布局；子元素间距可根据需求加col系列样式或mr系列样式 -->
+  <template v-if="layout0 == 'v2' || layout0 == 'l2'">
+    <label for="inputPassword" class="col1-sm-2 col-form-label">{{label}}</label>
+    <div class="col1-sm-10" :class="layout0 == 'v2' ? 'v2-input-flex-width' : null">
+      <input type="password" class="form-control" id="inputPassword" :placeholder="placeholder">
     </div>
-    <input v-model="value" v-if="!withAddon" :class="[{'is-invalid' : invalid}, inputClass ? inputClass : null, size0 ? 'form-control-'+size0 : null, plainText ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" :readonly="readOnly || plainText" :disabled="disabled">
-    <small class="form-text text-muted" :class="{'invalid-feedback': invalid}">{{tips}}</small>
-  </div>
-  <div class="input-group" :class="[inputClass, size0 ? 'input-group-'+size0 : null]" v-if="withAddon && !wrapInput">
-    <span v-if="laddons.length>0" class="input-group-addon" v-for="addon in laddons">{{addon}}</span>
-    <slot name="laddon"></slot>
-    <input v-model="value" :class="[{'is-invalid' : invalid}, plainText ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" :readonly="readOnly || plainText" :disabled="disabled">
-    <span class="input-group-addon" v-if="raddon">{{raddon}}</span>
-    <slot name="raddon"></slot>
-  </div>
-  <input v-model="value" v-if="!withAddon && !wrapInput" :class="[{'is-invalid' : invalid}, inputClass ? inputClass : null, size0 ? 'form-control-'+size0 : null, plainText ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" :readonly="readOnly || plainText" :disabled="disabled">
-  <small v-if="!wrapInput" class="form-text text-muted" :class="{'invalid-feedback': invalid}">{{tips}}</small>
+    <small id="emailHelp" class="form-text text-muted col-form-label">{{tips}}</small>
+  </template>
+  <!-- 水平且label独占一行 外部节点需加form-row样式 父节点通过col控制宽度 -->
+  <!--label for="inputCity">City</label>
+  <input type="text" class="form-control" id="inputCity" -->
+
+  <!-- 水平且label同行 外部节点加form-inline -->
+
 </div>
 </template>
 <script>
@@ -33,6 +33,7 @@ export default {
       type: String,
       default: "text"
     },
+    layout: String,
     placeholder: String,
     tips: String,
     id: String,
@@ -56,7 +57,9 @@ export default {
       invalid: false,
       id0: this.id,
       laddons: this.addons ? [].concat(this.addons) : [],
-      size0: this.size || this.$parent.size
+      size0: this.size || this.$parent.size,
+      className: null,
+      layout0: null
     }
   },
   computed: {
@@ -69,8 +72,17 @@ export default {
     }
   },
   created () {
+    this.layout0 = this.layout || this.$parent.layout
+    if (!this.layout0) {
+      this.layout0 = 'v1'
+    }
     if (!this.id0) {
       this.id0 = 'input_' + this._uid
+    }
+    if (this.layout0 == 'v2') {
+      this.className = 'row col'
+    } else if (this.layout0 == 'l2') {
+      this.className = 'form-inline'
     }
   },
   mounted () {
@@ -80,3 +92,8 @@ export default {
   },
 }
 </script>
+<style lang="less">
+.v2-input-flex-width {
+  flex: 1;
+}
+</style>
