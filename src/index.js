@@ -37,7 +37,7 @@ import BButton from './components/b-button/index.vue'
 import BChecker from './components/b-checker/index.vue'
 import BCheckerGroup from './components/b-checker-group/index.vue'
 import BGroup from './components/b-group/index.vue'
-import BInput from './components/b-input/index.vue'
+import BForm from './components/b-form/index.vue'
 import BSelect from './components/b-select/index.vue'
 
 import City from './components/city/index.vue'
@@ -82,7 +82,7 @@ export {
   BChecker,
   BCheckerGroup,
   BGroup,
-  BInput,
+  BForm,
   BSelect,
 
   City
