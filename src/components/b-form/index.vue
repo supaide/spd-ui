@@ -1,46 +1,44 @@
 <template>
 <div class="form-group" :class="className">
   <template v-if="layout0 == 'v1' || layout0 == 'l1'">
-  <label :for="id0" :class="[label !== undefined ? null : 'sr-only', size0 ? 'col-form-label col-form-label-'+size0 : null]">{{label}}</label>
+  <label :for="id0" :style="labelStyle" :class="[labelClass0, label !== undefined ? null : 'sr-only', size0 ? 'col-form-label col-form-label-'+size0 : null]">{{label}}</label>
     <template v-if="type=='input'">
-      <input type="text" class="form-control" :class="size0 ? 'form-control-'+size0 : null" :id="id0" :placeholder="placeholder" ref="input">
+      <input type="text" :class="[formClass0, size0 ? 'form-control-'+size0 : null, plaintext0 ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" ref="input" :readonly="readonly0" :disabled="disabled0">
     </template>
     <template v-if="type=='textarea'">
-      <textarea class="form-control" :class="size0 ? 'form-control-'+size0 : null"></textarea>
+      <textarea class="form-control" :class="[formClass0, size0 ? 'form-control-'+size0 : null]" :readonly="readonly0" :disabled="disabled0"></textarea>
     </template>
     <template v-if="type=='select'">
-      <select class="form-control" :class="size0 ? 'form-control-'+size0 : null" :id="id0" :multiple="multiple">
+      <select class="form-control" :class="[formClass0, size0 ? 'form-control-'+size0 : null]" :id="id0" :multiple="multiple" :readonly="readonly0" :disabled="disabled0">
         <slot></slot>
       </select>
     </template>
     <template v-if="type=='checker'">
-      <b-checker :name="name" :item="item" :class="[layout0 == 'v1' ? null : 'col-form-label', size0 ? 'col-form-label-'+size0 : null]" :multi="inputType=='checkbox'" :size="size0"></b-checker>
+      <b-checker :name="name" :item="item" :class="[formClass0, layout0 == 'v1' ? null : 'col-form-label', size0 ? 'col-form-label-'+size0 : null]" :multi="inputType=='checkbox'" :size="size0" :readonly="readonly0" :disabled="disabled0"></b-checker>
     </template>
     <small class="form-text text-muted">{{tips}}</small>
   </template>
 
   <template v-if="layout0 == 'v2' || layout0 == 'l2'">
-    <label :for="id0" class="col-form-label" :class="[label !== undefined ? null : 'sr-only', size0 ? 'col-form-label-'+size0 : null]">{{label}}</label>
-    <div :class="layout0 == 'v2' ? 'v2-input-flex-width' : null">
+    <label :for="id0" :style="labelStyle" class="col-form-label" :class="[labelClass0, label !== undefined ? null : 'sr-only', size0 ? 'col-form-label-'+size0 : null]">{{label}}</label>
+    <div :class="[formClass0, layout0 == 'v2' ? 'v2-input-flex-width' : null]" :style="{marginLeft: label ? formGap0 : null, marginRight: tips ? formGap0 : null}">
       <template v-if="type=='input'">
-        <input type="password" class="form-control" :class="size0 ? 'form-control-'+size0 : null" :id="id0" :placeholder="placeholder">
+        <input type="password" :class="[size0 ? 'form-control-'+size0 : null, plaintext0 ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" :readonly="readonly0" :disabled="disabled0">
       </template>
       <template v-if="type=='textarea'">
-        <textarea class="form-control" :class="size0 ? 'form-control-'+size0 : null"></textarea>
+        <textarea class="form-control" :class="size0 ? 'form-control-'+size0 : null" :readonly="readonly0" :disabled="disabled0"></textarea>
       </template>
       <template v-if="type=='select'">
-        <select class="form-control" :class="size0 ? 'form-control-'+size0 : null" :id="id0" :multiple="multiple">
+        <select class="form-control" :class="size0 ? 'form-control-'+size0 : null" :id="id0" :multiple="multiple" :readonly="readonly0" :disabled="disabled0">
           <slot></slot>
         </select>
       </template>
       <template v-if="type=='checker'">
-        <b-checker :name="name" :item="item" class="col-form-label" :class="size0 ? 'col-form-label-'+size0 : null" :multi="inputType=='checkbox'" :size="size0"></b-checker>
+        <b-checker :name="name" :item="item" class="col-form-label" :class="size0 ? 'col-form-label-'+size0 : null" :multi="inputType=='checkbox'" :size="size0" :readonly="readonly0" :disabled="disabled0"></b-checker>
       </template>
     </div>
     <small class="form-text text-muted col-form-label" :class="size0 ? 'col-form-label-'+size0 : null">{{tips}}</small>
   </template>
-
-
 </div>
 </template>
 <script>
@@ -71,10 +69,16 @@ export default {
     id: String,
     name: String,
     size: String,
-    readOnly: Boolean,
+
+    labelWidth: String,
+    labelClass: String,
+    labelAlign: String,
+    formClass: String,
+    formGap: String,
+
+    readonly: Boolean,
     disabled: Boolean,
-    plainText: Boolean,
-    labelClass: [String, Array],
+    plaintext: Boolean,
     inputClass: [String, Array],
     hideLabel: Boolean,
     addons: [String, Array],
@@ -93,7 +97,16 @@ export default {
       laddons: this.addons ? [].concat(this.addons) : [],
       size0: this.size || this.$parent.size,
       className: null,
-      layout0: null
+      layout0: this.layout || this.$parent.layout,
+      labelWidth0: this.labelWidth || this.$parent.labelWidth,
+      labelClass0: this.labelClass || this.$parent.labelClass,
+      labelAlign0: this.labelAlign || this.$parent.labelAlign,
+      formClass0: this.formClass || this.$parent.formClass,
+      formGap0: this.formGap || this.$parent.formGap,
+      readonly0: this.readonly || this.$parent.readonly || this.plaintext || this.$parent.plaintext,
+      disabled0 : this.disabled || this.$parent.disabled,
+      plaintext0: this.plaintext || this.$parent.plaintext,
+      labelStyle: null
     }
   },
   computed: {
@@ -106,9 +119,11 @@ export default {
     }
   },
   created () {
-    this.layout0 = this.layout || this.$parent.layout
     if (!this.layout0) {
       this.layout0 = 'v1'
+    }
+    if (!this.formGap0) {
+      this.formGap0 = '.5rem'
     }
     if (!this.id0) {
       this.id0 = 'form_' + this._uid
@@ -117,6 +132,11 @@ export default {
       this.className = 'row col'
     } else if (this.layout0 == 'l2') {
       this.className = 'form-inline'
+    }
+    if (this.labelAlign0 || this.labelWidth0) {
+      this.labelStyle = {}
+      this.labelAlign0 ? this.labelStyle['text-align'] = this.labelAlign0 : null
+      this.labelWidth0 ? this.labelStyle['width'] = this.labelWidth0 : null
     }
   },
   mounted () {

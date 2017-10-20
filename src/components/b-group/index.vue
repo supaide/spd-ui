@@ -23,7 +23,15 @@ export default {
     row: Boolean,
     narrowRow: Boolean,
     inline: Boolean,
-    size: String
+    size: String,
+    labelWidth: String,
+    labelClass: String,
+    labelAlign: String,
+    formClass: String,
+    formGap: String,
+    readonly: Boolean,
+    disabled: Boolean,
+    plaintext: Boolean,
   },
   data () {
     return {
