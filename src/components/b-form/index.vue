@@ -1,20 +1,20 @@
 <template>
 <div class="form-group" :class="className">
   <template v-if="layout0 == 'v1' || layout0 == 'l1'">
-  <label :for="id0" :style="labelStyle" :class="[labelClass0, label !== undefined ? null : 'sr-only', size0 ? 'col-form-label col-form-label-'+size0 : null]">{{label}}</label>
+    <label :for="id0" :style="labelStyle" :class="[labelClass0, label !== undefined ? null : 'sr-only', size0 ? 'col-form-label col-form-label-'+size0 : null]">{{label}}</label>
     <template v-if="type=='input'">
-      <input type="text" :class="[formClass0, size0 ? 'form-control-'+size0 : null, plaintext0 ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" ref="input" :readonly="readonly0" :disabled="disabled0">
+      <input type="text" v-model="value" :class="[formClass0, size0 ? 'form-control-'+size0 : null, plaintext0 ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" ref="input" :readonly="readonly0" :disabled="disabled0">
     </template>
     <template v-if="type=='textarea'">
-      <textarea class="form-control" :class="[formClass0, size0 ? 'form-control-'+size0 : null]" :readonly="readonly0" :disabled="disabled0"></textarea>
+      <textarea v-model="value" class="form-control" :class="[formClass0, size0 ? 'form-control-'+size0 : null]" :readonly="readonly0" :disabled="disabled0"></textarea>
     </template>
     <template v-if="type=='select'">
-      <select class="form-control" :class="[formClass0, size0 ? 'form-control-'+size0 : null]" :id="id0" :multiple="multiple" :readonly="readonly0" :disabled="disabled0">
-        <slot></slot>
+      <select v-model="value" class="form-control" :class="[formClass0, size0 ? 'form-control-'+size0 : null]" :id="id0" :multiple="multiple" :readonly="readonly0" :disabled="disabled0">
+        <option v-for="(_item, index) in item" :value="_item.value" :key="_item.value">{{_item.text}}</option>
       </select>
     </template>
     <template v-if="type=='checker'">
-      <b-checker :name="name" :item="item" :class="[formClass0, layout0 == 'v1' ? null : 'col-form-label', size0 ? 'col-form-label-'+size0 : null]" :multi="inputType=='checkbox'" :size="size0" :readonly="readonly0" :disabled="disabled0"></b-checker>
+      <b-checker v-model="value" :name="name" :item="item" :class="[formClass0, layout0 == 'v1' ? null : 'col-form-label', size0 ? 'col-form-label-'+size0 : null]" :multi="inputType=='checkbox'" :size="size0" :readonly="readonly0" :disabled="disabled0"></b-checker>
     </template>
     <small class="form-text text-muted">{{tips}}</small>
   </template>
@@ -23,18 +23,18 @@
     <label :for="id0" :style="labelStyle" class="col-form-label" :class="[labelClass0, label !== undefined ? null : 'sr-only', size0 ? 'col-form-label-'+size0 : null]">{{label}}</label>
     <div :class="[formClass0, layout0 == 'v2' ? 'v2-input-flex-width' : null]" :style="{marginLeft: label ? formGap0 : null, marginRight: tips ? formGap0 : null}">
       <template v-if="type=='input'">
-        <input type="password" :class="[size0 ? 'form-control-'+size0 : null, plaintext0 ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" :readonly="readonly0" :disabled="disabled0">
+        <input v-model="value" type="password" :class="[size0 ? 'form-control-'+size0 : null, plaintext0 ? 'form-control-plaintext' : 'form-control']" :id="id0" :placeholder="placeholder" :readonly="readonly0" :disabled="disabled0">
       </template>
       <template v-if="type=='textarea'">
-        <textarea class="form-control" :class="size0 ? 'form-control-'+size0 : null" :readonly="readonly0" :disabled="disabled0"></textarea>
+        <textarea v-model="value" class="form-control" :class="size0 ? 'form-control-'+size0 : null" :readonly="readonly0" :disabled="disabled0"></textarea>
       </template>
       <template v-if="type=='select'">
-        <select class="form-control" :class="size0 ? 'form-control-'+size0 : null" :id="id0" :multiple="multiple" :readonly="readonly0" :disabled="disabled0">
-          <slot></slot>
+        <select v-model="value" class="form-control" :class="size0 ? 'form-control-'+size0 : null" :id="id0" :multiple="multiple" :readonly="readonly0" :disabled="disabled0">
+          <option v-for="(_item, index) in item" :value="_item.value" :key="_item.value">{{_item.text}}</option>
         </select>
       </template>
       <template v-if="type=='checker'">
-        <b-checker :name="name" :item="item" class="col-form-label" :class="size0 ? 'col-form-label-'+size0 : null" :multi="inputType=='checkbox'" :size="size0" :readonly="readonly0" :disabled="disabled0"></b-checker>
+        <b-checker v-model="value" :name="name" :item="item" class="col-form-label" :class="size0 ? 'col-form-label-'+size0 : null" :multi="inputType=='checkbox'" :size="size0" :readonly="readonly0" :disabled="disabled0"></b-checker>
       </template>
     </div>
     <small class="form-text text-muted col-form-label" :class="size0 ? 'col-form-label-'+size0 : null">{{tips}}</small>
@@ -50,7 +50,7 @@ export default {
     BChecker
   },
   props: {
-    item: Object,
+    item: [Array, Object],
     label: String,
     type: {
       type: String,
@@ -68,8 +68,8 @@ export default {
     tips: String,
     id: String,
     name: String,
-    size: String,
 
+    size: String,
     labelWidth: String,
     labelClass: String,
     labelAlign: String,
@@ -79,6 +79,7 @@ export default {
     readonly: Boolean,
     disabled: Boolean,
     plaintext: Boolean,
+
     inputClass: [String, Array],
     hideLabel: Boolean,
     addons: [String, Array],
@@ -119,6 +120,14 @@ export default {
     }
   },
   created () {
+    if (this.type == 'select') {
+      if (this.multiple && (!this.value || !Array.isArray(this.value))) {
+        this.value = []
+      }
+      if ((typeof this.value === 'undefined' || this.value === null) && this.item) {
+        this.value = this.item[0].value
+      }
+    }
     if (!this.layout0) {
       this.layout0 = 'v1'
     }
