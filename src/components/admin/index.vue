@@ -54,7 +54,7 @@
 
         </nav>
       </div>
-      <main class="col-12 py-sm-3 pl-md-3 spd-content" :class="[blank ? 'col-sm-12' : 'col-md-9 col-xl-8']">
+      <main class="col-12 py-sm-3 pl-md-3 spd-content" :class="[blank ? 'col-sm-12' : 'col-md-10']">
         <nav class="spd-breadcrumb breadcrumb" v-if="breadCrumbs && breadCrumbs.length > 0">
           <v-link class="breadcrumb-item" :href="item.url" v-for="(item, index) in breadCrumbs" :key="index" v-if="index<breadCrumbs.length-1">{{item.title}}</v-link>
           <span class="breadcrumb-item active">{{breadCrumbs[breadCrumbs.length-1].title}}</span>

@@ -110,12 +110,6 @@ export default {
     addon: Boolean,
     laddons: [String, Array],
     raddons: [String, Array],
-
-    inputClass: [String, Array],
-    hideLabel: Boolean,
-    wrapInput: Boolean,
-    wrapClass: [String, Array],
-    labelMiddle: Boolean,
   },
   data () {
     return {
