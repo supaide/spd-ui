@@ -14,8 +14,6 @@
 * limitations under the License.
 */
 
-import {$} from 'spd-webutil';
-
 /**
  * set transition
  * @param $target
