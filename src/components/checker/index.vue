@@ -5,6 +5,7 @@
 </label>
 </template>
 <script>
+import {$} from 'spd-webutil'
 export default {
   model: {
     prop: 'currentValue',
@@ -58,7 +59,7 @@ export default {
     },
     onClick () {
       let values = []
-      let $targets = document.querySelectorAll('input[name='+this.name0+']')
+      let $targets = $('input[name='+this.name0+']')
       $targets.forEach((target) => {
         if (target.checked) {
           values.push(this.typeValue(target.value))

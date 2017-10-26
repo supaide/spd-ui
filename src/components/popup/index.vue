@@ -7,6 +7,8 @@
   </div>
 </template>
 <script>
+import {$} from 'spd-webutil'
+
 let popupCache = {}
 export default {
   props: {

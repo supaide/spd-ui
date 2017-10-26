@@ -14,6 +14,8 @@
 * limitations under the License.
 */
 
+import {$} from 'spd-webutil';
+
 const tpl = `
 <div class="<% if(isAndroid){ %>weui-skin_android <% } %><%= className %>">
     <div class="weui-mask"></div>

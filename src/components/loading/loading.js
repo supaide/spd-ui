@@ -14,6 +14,8 @@
 * limitations under the License.
 */
 
+import {$} from 'spd-webutil';
+
 const tpl = `
 <div class="weui-loading_toast <%= className %>">
     <div class="weui-mask_transparent"></div>

@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 
+import {$} from 'spd-webutil';
 import dialog from '../dialog/dialog.js';
 
 /**

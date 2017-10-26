@@ -66,6 +66,7 @@
 </div>
 </template>
 <script>
+import {$} from 'spd-webutil'
 import VLink from '../v-link/index.vue'
 export default {
   components: {
