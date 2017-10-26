@@ -8,7 +8,6 @@
 </template>
 <script>
 import ClickOutside from '../../directives/click-outside'
-import {$} from 'spd-webutil'
 export default {
   directives: {
     ClickOutside

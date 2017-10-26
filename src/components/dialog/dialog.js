@@ -14,7 +14,6 @@
 * limitations under the License.
 */
 
-import {$} from 'spd-webutil'
 const tpl = `
 <div class="<%=className%>">
     <div class="weui-mask"></div>

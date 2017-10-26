@@ -14,7 +14,6 @@
 * limitations under the License.
 */
 
-import {$} from 'spd-webutil';
 import cron from './cron';
 import './scroll';
 import * as util from './util';

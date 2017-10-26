@@ -1,4 +1,3 @@
-import {$} from 'spd-webutil'
 import dialog from './dialog/index.vue'
 import picker from './picker/index.vue'
 
@@ -19,7 +18,8 @@ export default {
       return
     }
     installed = true
-    $([dialog, picker]).forEach(function (component) {
+    let components = [dialog, picker]
+    components.forEach(function (component) {
       init(Vue, target, component)
     })
   }
