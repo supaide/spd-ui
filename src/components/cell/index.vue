@@ -5,11 +5,11 @@
     <slot name="label"></slot>
   </div>
   <div class="weui-cell__bd" :class="bdClass">
-    <p><slot>{{title}}</slot></p>
+    <p><slot></slot></p>
   </div>
   <div class="weui-cell__ft">
     <span v-if="right && right.length>0">{{right}}</span>
-    <slot name="right">{{right}}</slot>
+    <slot name="right"></slot>
     <i class="weui-loading" v-if="isLoading"></i>
   </div>
 </node>
